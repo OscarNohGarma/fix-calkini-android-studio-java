@@ -3,19 +3,29 @@ package com.example.fixcalkini;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 public class LoginActivity extends AppCompatActivity {
-
-    Button btnLogin = findViewById(R.id.button_login);
+    private ImageView viewImg;
+    private Button btnLogin; // Declarar aquí, pero inicializar en onCreate
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        viewImg = findViewById(R.id.idcarrite);
+        btnLogin = findViewById(R.id.btn_inicio); //
+
+        Animation fromTop = AnimationUtils.loadAnimation(this, R.anim.anim_from_top);
+        viewImg.startAnimation(fromTop);
+
+        // Ir a Main
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -26,3 +36,4 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 }
+

@@ -1,6 +1,9 @@
 package com.example.fixcalkini;
 
 import android.os.Bundle;
+import android.view.View;
+import android.content.Intent;
+import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -12,7 +15,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 public class MainActivity extends AppCompatActivity implements OnMapReadyCallback {
-
+    Button btnReport;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,6 +26,16 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         if (mapFragment != null) {
             mapFragment.getMapAsync(this);
         }
+        //Ir a Tus Reportes
+        btnReport = findViewById(R.id.btnReportes);
+        btnReport.setOnClickListener(new View.OnClickListener()  {
+            @Override
+            public void onClick(View v){
+                Intent intent = new Intent(MainActivity.this, ReportesActivity.class);
+                startActivity(intent);
+            }
+
+        });
     }
 
     @Override
