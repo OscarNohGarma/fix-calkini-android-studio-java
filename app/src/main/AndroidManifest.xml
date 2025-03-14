@@ -17,6 +17,9 @@
         android:theme="@style/Theme.FixCalkini"
         tools:targetApi="31">
         <activity
+            android:name=".LoginActivity"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="false" />
 
@@ -25,7 +28,7 @@
             android:value="AIzaSyA7I6Z2LF-jtAR6NAMP_AdD0LiQ6A7bKWM" />
 
         <activity
-            android:name=".LoginActivity"
+            android:name=".SplashScreen"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
