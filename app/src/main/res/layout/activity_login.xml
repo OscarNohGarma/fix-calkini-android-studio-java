@@ -47,7 +47,7 @@
                     android:id="@+id/loginText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Inicio"
+                    android:text="FixCalkiní"
                     android:textAlignment="center"
                     android:textColor="@color/grayBlue"
                     android:textSize="36sp"

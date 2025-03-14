@@ -20,11 +20,12 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         viewImg = findViewById(R.id.idcarrite);
-        btnLogin = findViewById(R.id.btn_inicio); // 🔹 Inicializar aquí
+        btnLogin = findViewById(R.id.btn_inicio); //
 
         Animation fromTop = AnimationUtils.loadAnimation(this, R.anim.anim_from_top);
         viewImg.startAnimation(fromTop);
 
+        // Ir a Main
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
