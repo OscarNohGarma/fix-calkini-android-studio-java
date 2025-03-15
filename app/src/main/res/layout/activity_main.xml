@@ -6,23 +6,6 @@
     android:background="@color/white"
     tools:context=".MainActivity">
 
-    <!-- Contenedor de la parte superior -->
-
-        <!-- Botón de perfil
-        <ImageButton
-            android:id="@+id/btnPerfil"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:background="@android:color/transparent"
-            android:src="@drawable/ic_user"
-            android:contentDescription="Perfil" />-->
-
-        <!-- Nombre de la app (centrado) -->
-
-        <!-- Botón de configuración -->
-
-
-    <!-- Contenedor del mapa -->
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/mapFragment"
         android:name="com.google.android.gms.maps.SupportMapFragment"
@@ -52,7 +35,7 @@
         android:layout_height="60dp"
         android:backgroundTint="@color/grayBlue"
         android:text="Ver tus reportes"
-        android:textSize="18sp"
+        android:textSize="16sp"
         android:textColor="@color/white"
         app:cornerRadius="50dp"
         app:layout_constraintBottom_toBottomOf="parent"
