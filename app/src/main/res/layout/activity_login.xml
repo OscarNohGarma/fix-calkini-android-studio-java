@@ -29,19 +29,21 @@
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="380dp"
             android:layout_centerInParent="true"
             android:layout_margin="30dp"
-            android:background="@drawable/custom_edittext"
+            android:background="@color/white"
             app:cardCornerRadius="30dp"
             app:cardElevation="20dp">
 
             <LinearLayout
                 android:id="@+id/layout_login"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="380dp"
                 android:orientation="vertical"
                 android:padding="24dp"
+                android:gravity="center_vertical"
+                android:layout_gravity="center"
                 android:background="@color/white">
 
                 <TextView
@@ -63,7 +65,7 @@
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/edit_correo1"
                         android:layout_width="match_parent"
-                        android:layout_height="50dp"
+                        android:layout_height="wrap_content"
                         android:layout_marginTop="40dp"
                         android:background="@drawable/custom_edittext"
                         android:drawablePadding="8dp"
@@ -85,7 +87,8 @@
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/edit_contra1"
                         android:layout_width="match_parent"
-                        android:layout_height="50dp"
+                        android:layout_height="wrap_content"
+                        android:padding="7dp"
                         android:layout_marginTop="10dp"
                         android:textColor="@color/black"
                         android:background="@drawable/custom_edittext"
@@ -96,11 +99,11 @@
                 <Button
                     android:id="@+id/btn_inicio"
                     android:layout_width="match_parent"
-                    android:layout_height="60dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="30dp"
                     android:backgroundTint="@color/grayBlue"
                     android:text="Iniciar"
-                    android:textSize="18sp"
+                    android:textSize="16sp"
                     android:textColor="@color/white"
                     app:cornerRadius="50dp" />
 
@@ -122,10 +125,12 @@
             <LinearLayout
                 android:id="@+id/layout_registro"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="380dp"
                 android:orientation="vertical"
                 android:padding="24dp"
                 android:background="@color/white"
+                android:gravity="center_vertical"
+                android:layout_gravity="center"
                 android:visibility="gone"
                 >
 
@@ -146,7 +151,7 @@
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/edit_nombre"
                         android:layout_width="match_parent"
-                        android:layout_height="50dp"
+                        android:layout_height="40dp"
                         android:background="@drawable/custom_edittext"
                         android:hint="Nombre" />
                 </com.google.android.material.textfield.TextInputLayout>
@@ -158,7 +163,7 @@
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/edit_correo2"
                         android:layout_width="match_parent"
-                        android:layout_height="50dp"
+                        android:layout_height="40dp"
                         android:background="@drawable/custom_edittext"
                         android:hint="Correo" />
                 </com.google.android.material.textfield.TextInputLayout>
@@ -170,7 +175,7 @@
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/edit_contra2"
                         android:layout_width="match_parent"
-                        android:layout_height="50dp"
+                        android:layout_height="40dp"
                         android:background="@drawable/custom_edittext"
                         android:hint="Contraseña"
                         android:inputType="textPassword" />
@@ -183,7 +188,7 @@
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/edit_confirmaContra"
                         android:layout_width="match_parent"
-                        android:layout_height="50dp"
+                        android:layout_height="40dp"
                         android:background="@drawable/custom_edittext"
                         android:hint="Confirmar Contraseña"
                         android:inputType="textPassword"
@@ -195,10 +200,10 @@
                 <Button
                     android:id="@+id/btn_registro"
                     android:layout_width="match_parent"
-                    android:layout_height="60dp"
+                    android:layout_height="wrap_content"
                     android:backgroundTint="@color/grayBlue"
                     android:text="Registrarse"
-                    android:textSize="18sp"
+                    android:textSize="16sp"
                     android:textColor="@color/white" />
 
                 <TextView
