@@ -15,10 +15,11 @@
         android:layout_height="40dp"
         android:layout_margin="16dp"
         android:background="@drawable/custom_button"
-        android:contentDescription="Regresar"
+        android:contentDescription="@string/btn_back_desc"
         android:src="@drawable/ic_back"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="TouchTargetSizeCheck" />
 
     <!-- Título de la pantalla -->
     <TextView
@@ -27,7 +28,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:fontFamily="@font/poppins_regular"
-        android:text="Tus reportes"
+        android:text="@string/txt_tus_reportes"
         android:textColor="@color/grayBlue"
         android:textSize="20sp"
         android:textStyle="bold"
@@ -53,7 +54,7 @@
         android:id="@+id/txtSinReportes"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Aún no has realizado reportes."
+        android:text="@string/txt_no_reports"
         android:textSize="16sp"
         android:textColor="@color/grayBlue"
         android:visibility="visible"

@@ -36,7 +36,7 @@
             android:layout_marginEnd="10dp"
             android:layout_marginTop="10dp"
             android:background="@drawable/custom_button"
-            android:contentDescription="Configuración"
+            android:contentDescription="@string/desc_conf"
             android:src="@drawable/menu"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -47,7 +47,7 @@
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:backgroundTint="@color/grayBlue"
-            android:text="Crear un nuevo reporte"
+            android:text="@string/btn_new_report"
             android:textSize="16sp"
             android:textColor="@color/white"
             app:cornerRadius="50dp"

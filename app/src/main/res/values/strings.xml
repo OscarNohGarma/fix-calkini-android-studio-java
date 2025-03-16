@@ -8,4 +8,50 @@
         <item>Árbol caído</item>
         <item>Fuga de agua</item>
     </string-array>
+
+    <!-- Acerca de -->
+    <string name="about_name">Acerca de FixCalkiní</string>
+    <string name="about_text">FixCalkiní es una aplicación creada para reportar problemas en la infraestructura urbana de Calkiní, permitiendo a los ciudadanos mejorar su comunidad de forma colaborativa."</string>
+    <string name="about_ver">Versión: 1.0.0</string>
+    <string name="btn_volver">Volver</string>
+
+    <!-- Login -->
+    <string name="txt_correo">Correo</string>
+    <string name="txt_pass">Contraseña</string>
+    <string name="btn_login">Iniciar sesión</string>
+    <string name="txt_register">Registrarse</string>
+    <string name="txt_name">Nombre</string>
+    <string name="txt_confirm_pass">Confirmar contraseña</string>
+    <string name="txt_back_login">Volver a inicio</string>
+
+
+    <!-- Main -->
+    <string name="desc_conf">Opciones</string>
+    <string name="btn_new_report">Crear un nuevo reporte</string>
+
+    <!-- Perfil -->
+    <string name="btn_back_desc">Regresar</string>
+    <string name="txt_profile">Perfil</string>
+    <string name="txt_prof_name">Nombre:</string>
+    <string name="txt_hint_name">Tu nombre</string>
+    <string name="txt_prof_correo">Correo electrónico:</string>
+    <string name="txt_ejemplo_correo">usuario@example.com</string>
+    <string name="text_reportes_realizados">Reportes realizados:</string>
+    <string name="txt_numero_reportes">12</string>
+    <string name="txt_fecha_registro">Fecha de registro:</string>
+    <string name="txt_ejemplo_fecha">10/03/2024</string>
+    <string name="btn_save">Guardar cambios</string>
+
+    <!-- Nuevo reporte -->
+    <string name="txt_nuevo_reporte">Nuevo reporte</string>
+    <string name="txt_tipo_reporte">Tipo de reporte:</string>
+    <string name="txt_desc_reporte">Descripción del reporte:</string>
+    <string name="txt_hint_desc">Describe el problema...</string>
+    <string name="txt_ubicacion_seleccionada">Ubicación seleccionada:</string>
+    <string name="btn_send_report">Enviar reporte</string>
+
+    <!-- Tus reportes -->
+    <string name="txt_tus_reportes">Tus reportes</string>
+    <string name="txt_no_reports">Aún no has realizado reportes.</string>
+
 </resources>

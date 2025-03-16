@@ -50,7 +50,7 @@
                     android:id="@+id/loginText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="FixCalkiní"
+                    android:text="@string/app_name"
                     android:textAlignment="center"
                     android:textColor="@color/grayBlue"
                     android:textSize="36sp"
@@ -69,7 +69,7 @@
                         android:layout_marginTop="40dp"
                         android:background="@drawable/custom_edittext"
                         android:drawablePadding="8dp"
-                        android:hint="Correo"
+                        android:hint="@string/txt_correo"
                         android:padding="8dp"
                         android:textColor="@color/black"
 
@@ -81,7 +81,6 @@
                     android:layout_width="match_parent"
                     android:textColorHint="@android:color/darker_gray"
                     android:layout_height="wrap_content"
-                    android:paddingLeft="2dp"
                     app:passwordToggleEnabled="true">
 
                     <com.google.android.material.textfield.TextInputEditText
@@ -92,7 +91,7 @@
                         android:layout_marginTop="10dp"
                         android:textColor="@color/black"
                         android:background="@drawable/custom_edittext"
-                        android:hint="Contraseña"
+                        android:hint="@string/txt_pass"
                         android:inputType="textPassword" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -102,7 +101,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="30dp"
                     android:backgroundTint="@color/grayBlue"
-                    android:text="Iniciar"
+                    android:text="@string/btn_login"
                     android:textSize="16sp"
                     android:textColor="@color/white"
                     app:cornerRadius="50dp" />
@@ -114,7 +113,7 @@
                     android:layout_gravity="center_horizontal"
                     android:layout_marginBottom="20dp"
                     android:padding="4dp"
-                    android:text="Registrar"
+                    android:text="@string/txt_register"
                     android:textAlignment="center"
                     android:textColor="@color/grayBlue"
                     android:textSize="14sp" />
@@ -131,11 +130,10 @@
                 android:background="@color/white"
                 android:gravity="center_vertical"
                 android:layout_gravity="center"
-                android:visibility="gone"
                 >
 
                 <TextView
-                    android:text="Registro"
+                    android:text="@string/txt_register"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textAlignment="center"
@@ -153,7 +151,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="40dp"
                         android:background="@drawable/custom_edittext"
-                        android:hint="Nombre" />
+                        android:hint="@string/txt_name" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -165,7 +163,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="40dp"
                         android:background="@drawable/custom_edittext"
-                        android:hint="Correo" />
+                        android:hint="@string/txt_correo" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -177,7 +175,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="40dp"
                         android:background="@drawable/custom_edittext"
-                        android:hint="Contraseña"
+                        android:hint="@string/txt_pass"
                         android:inputType="textPassword" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -190,7 +188,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="40dp"
                         android:background="@drawable/custom_edittext"
-                        android:hint="Confirmar Contraseña"
+                        android:hint="@string/txt_confirm_pass"
                         android:inputType="textPassword"
 
 
@@ -202,7 +200,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:backgroundTint="@color/grayBlue"
-                    android:text="Registrarse"
+                    android:text="@string/txt_register"
                     android:textSize="16sp"
                     android:textColor="@color/white" />
 
@@ -210,7 +208,7 @@
                     android:id="@+id/btn_volver_login"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Volver al inicio"
+                    android:text="@string/txt_back_login"
                     android:textAlignment="center"
                     android:textColor="@color/grayBlue"
                     android:textSize="14sp" />
