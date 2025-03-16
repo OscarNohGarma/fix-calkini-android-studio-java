@@ -17,6 +17,12 @@
         android:theme="@style/Theme.FixCalkini"
         tools:targetApi="31">
         <activity
+            android:name=".ProfileActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AboutActivity"
+            android:exported="false" />
+        <activity
             android:name=".ReportarActivity"
             android:exported="false" />
         <activity

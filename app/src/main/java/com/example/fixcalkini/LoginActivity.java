@@ -41,42 +41,45 @@ public class LoginActivity extends AppCompatActivity {
         viewImg.startAnimation(fromTop);
 
         btnRegis.setOnClickListener(v -> {
-            // Primero animamos la salida del login
-            layoutLogin.startAnimation(slideOut);
+            layoutRegistro.setVisibility(View.VISIBLE); // Hacemos visible el registro antes de iniciar animación
+            layoutRegistro.startAnimation(slideIn); // Se desliza dentro
+
             slideOut.setAnimationListener(new Animation.AnimationListener() {
                 @Override
                 public void onAnimationStart(Animation animation) {}
 
                 @Override
                 public void onAnimationEnd(Animation animation) {
-                    layoutLogin.setVisibility(View.GONE);
-                    layoutRegistro.setVisibility(View.VISIBLE);
-                    layoutRegistro.startAnimation(slideIn);
+                    layoutLogin.setVisibility(View.GONE); // Ocultamos hasta que termine la animación
                 }
 
                 @Override
                 public void onAnimationRepeat(Animation animation) {}
             });
+
+            layoutLogin.startAnimation(slideOut); // Se desliza fuera
         });
 
         btnVolverLogin.setOnClickListener(v -> {
-            // Primero animamos la salida del registro
-            layoutRegistro.startAnimation(slideOutRight);
+            layoutLogin.setVisibility(View.VISIBLE); // Hacemos visible el login antes de iniciar animación
+            layoutLogin.startAnimation(slideInLeft); // Se desliza dentro
+
             slideOutRight.setAnimationListener(new Animation.AnimationListener() {
                 @Override
                 public void onAnimationStart(Animation animation) {}
 
                 @Override
                 public void onAnimationEnd(Animation animation) {
-                    layoutRegistro.setVisibility(View.GONE);
-                    layoutLogin.setVisibility(View.VISIBLE);
-                    layoutLogin.startAnimation(slideInLeft);
+                    layoutRegistro.setVisibility(View.GONE); // Ocultamos hasta que termine la animación
                 }
 
                 @Override
                 public void onAnimationRepeat(Animation animation) {}
             });
+
+            layoutRegistro.startAnimation(slideOutRight); // Se desliza fuera
         });
+
 
 
         btnLogin.setOnClickListener(new View.OnClickListener(){

@@ -1,3 +1,11 @@
 <resources>
-    <string name="app_name">Fix Calkiní</string>
+    <string name="app_name">FixCalkiní</string>
+    <string-array name="tipo_reporte">
+        <item>Bache grande</item>
+        <item>Estancamiento de agua</item>
+        <item>Carretera en malas condiciones</item>
+        <item>Falta de iluminación</item>
+        <item>Árbol caído</item>
+        <item>Fuga de agua</item>
+    </string-array>
 </resources>
