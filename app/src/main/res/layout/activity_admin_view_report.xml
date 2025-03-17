@@ -2,13 +2,11 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    tools:context=".ReportarActivity"
-    android:id="@+id/main">
-
-
+    tools:context=".admin.AdminViewReportActivity">
     <ImageButton
         android:id="@+id/btnBack"
         android:layout_width="40dp"
@@ -25,7 +23,7 @@
         android:id="@+id/txt_titulo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/txt_nuevo_reporte"
+        android:text="Reporte"
         android:textSize="20sp"
         android:textStyle="bold"
         android:textColor="@color/grayBlue"
@@ -40,16 +38,20 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginTop="40dp"
-        android:text="@string/txt_tipo_reporte"
+        android:text="Problemática"
         android:textColor="@color/grayBlue"
         android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txt_titulo" />
 
-    <Spinner
+    <TextView
         android:id="@+id/spinner_tipo_reporte"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:text="Bache"
+        android:padding="9dp"
+        android:textSize="16sp"
+        android:textColor="@color/grayBlue"
         android:layout_margin="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -63,25 +65,23 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginTop="20sp"
-        android:text="@string/txt_desc_reporte"
+        android:text="Descripción"
         android:textColor="@color/grayBlue"
         android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/spinner_tipo_reporte" />
 
-    <EditText
+    <TextView
         android:id="@+id/et_descripcion"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
-        android:inputType="text"
         android:background="@drawable/custom_edittext"
         android:gravity="top"
-        android:hint="@string/txt_hint_desc"
         android:minHeight="100dp"
         android:padding="8dp"
         android:textColor="@color/grayBlue"
-        android:textColorHint="@color/grayBlueLight"
+        android:text="El bache se encuentra a mitad de la calle y tiene un tamaño bastante considerable, un carro podria averiarse en él"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -92,7 +92,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
-        android:text="@string/txt_ubicacion_seleccionada"
+        android:text="Ubicación"
         android:textColor="@color/grayBlue"
         android:layout_marginTop="20dp"
         android:textSize="16sp"
@@ -105,20 +105,31 @@
         android:layout_height="200dp"
         android:layout_margin="20sp"
         app:layout_constraintTop_toBottomOf="@+id/label_preview"
-
         tools:layout_editor_absoluteX="20dp" />
 
     <Button
-        android:id="@+id/btn_enviar_reporte"
+        android:id="@+id/btn_aceptar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="36dp"
         android:backgroundTint="@color/grayBlue"
-        android:text="@string/btn_send_report"
+        android:text="Aceptar"
         android:textColor="@color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/btn_rechazar"
+        app:layout_constraintHorizontal_bias="0.9"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/mapView" />
+
+    <Button
+        android:id="@+id/btn_rechazar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/grayBlue"
+        android:text="Rechazar"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.683"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/btn_aceptar" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

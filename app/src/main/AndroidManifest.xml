@@ -5,6 +5,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
 
     <application
         android:allowBackup="true"
@@ -16,6 +17,24 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.FixCalkini"
         tools:targetApi="31">
+        <activity
+            android:name=".admin.AdminViewReportActivity"
+            android:exported="false" />
+        <activity
+            android:name=".admin.AdminReportesAceptadosActivity"
+            android:exported="false" />
+        <activity
+            android:name=".admin.AdminProfileActivity"
+            android:exported="false" />
+        <activity
+            android:name=".admin.AdminReportesRecientesActivity"
+            android:exported="false" />
+        <activity
+            android:name=".admin.AdminReportesPendientesActivity"
+            android:exported="false" />
+        <activity
+            android:name=".SplashScreen"
+            android:exported="false" />
         <activity
             android:name=".ProfileActivity"
             android:exported="false" />
@@ -40,7 +59,7 @@
             android:value="AIzaSyA7I6Z2LF-jtAR6NAMP_AdD0LiQ6A7bKWM" />
 
         <activity
-            android:name=".SplashScreen"
+            android:name=".admin.AdminMainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

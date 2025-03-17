@@ -2,12 +2,11 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/main"
     android:background="@color/white"
-    tools:context=".ProfileActivity">
-
+    tools:context=".admin.AdminProfileActivity">
     <!-- Botón de regreso -->
     <ImageButton
         android:id="@+id/btnBack"
@@ -25,7 +24,7 @@
         android:id="@+id/txtTitulo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/txt_profile"
+        android:text="Administrador"
         android:textSize="20sp"
         android:textStyle="bold"
         android:textColor="@color/grayBlue"
@@ -59,17 +58,16 @@
         android:layout_marginStart="20dp"
         android:layout_marginTop="20dp"/>
 
-    <EditText
+    <TextView
         android:id="@+id/etNombre"
         android:layout_width="0dp"
         android:padding="9dp"
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
         android:background="@drawable/custom_edittext"
-        android:hint="@string/txt_hint_name"
+        android:text="@string/txt_name"
         android:textSize="16sp"
         android:textColor="@color/grayBlue"
-        android:textColorHint="@color/grayBlueLight"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/label_nombre"/>
@@ -106,7 +104,7 @@
         android:id="@+id/label_reportes"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/text_reportes_realizados"
+        android:text="Reportes aceptados"
         android:textSize="16sp"
         android:textColor="@color/grayBlue"
         app:layout_constraintTop_toBottomOf="@id/txtEmail"
@@ -151,17 +149,6 @@
         app:layout_constraintStart_toStartOf="parent"
         android:layout_marginStart="20dp"/>
 
-    <!-- Botón Guardar cambios -->
-    <Button
-        android:id="@+id/btnGuardar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:backgroundTint="@color/grayBlue"
-        android:text="@string/btn_save"
-        android:textColor="@color/white"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/txtRegistro" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

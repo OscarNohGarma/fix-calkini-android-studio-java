@@ -2,12 +2,11 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    android:fitsSystemWindows="true"
-    tools:context=".ReportesActivity">
-
+    tools:context=".admin.AdminReportesPendientesActivity">
     <!-- Botón para regresar -->
     <ImageButton
         android:id="@+id/btnBack"
@@ -28,7 +27,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:fontFamily="@font/poppins_regular"
-        android:text="@string/txt_tus_reportes"
+        android:text="Reportes pendientes"
         android:textColor="@color/grayBlue"
         android:textSize="20sp"
         android:textStyle="bold"
@@ -54,7 +53,7 @@
         android:id="@+id/txtSinReportes"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/txt_no_reports"
+        android:text="Aún no hay reportes."
         android:textSize="16sp"
         android:textColor="@color/grayBlue"
         android:visibility="visible"
@@ -62,5 +61,4 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="32dp" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>
