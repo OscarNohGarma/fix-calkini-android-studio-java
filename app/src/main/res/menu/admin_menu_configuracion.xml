@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/nav_perfil"
+        android:title="Perfil"
+        android:icon="@drawable/ic_user"
+        android:iconTint="@color/grayBlue"
+        />
+
+    <item
+        android:id="@+id/nav_reportes_pendientes"
+        android:title="Reportes pendientes"
+        android:icon="@drawable/report_svgrepo_com"
+        android:iconTint="@color/grayBlue"
+        />
+    <item
+        android:id="@+id/nav_reportes_aceptados"
+        android:title="Reportes aceptados"
+        android:icon="@drawable/accept"
+        android:iconTint="@color/grayBlue"
+        />
+    <item
+        android:id="@+id/nav_acerca_de"
+        android:title="Acerca de"
+        android:icon="@drawable/info"
+        />
+
+    <item
+        android:id="@+id/nav_cerrar_sesion"
+        android:title="Cerrar sesión"
+        android:icon="@drawable/logout"
+
+        />
+</menu>
