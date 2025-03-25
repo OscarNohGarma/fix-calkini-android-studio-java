@@ -28,7 +28,7 @@ public class SplashScreen extends AppCompatActivity {
 
         // Retrasar el cambio de Activity sin bloquear el hilo principal
         new Handler(Looper.getMainLooper()).postDelayed(() -> {
-            startActivity(new Intent(SplashScreen.this, LoginActivity.class));
+            startActivity(new Intent(SplashScreen.this, MainActivity.class));
             finish();
         }, 2000); // 2 segundos
     }

@@ -33,7 +33,7 @@
             android:name=".admin.AdminReportesPendientesActivity"
             android:exported="false" />
         <activity
-            android:name=".SplashScreen"
+            android:name=".MainActivity"
             android:exported="false" />
         <activity
             android:name=".ProfileActivity"
@@ -51,7 +51,7 @@
             android:name=".LoginActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".admin.AdminMainActivity"
             android:exported="false" />
 
         <meta-data
@@ -59,7 +59,7 @@
             android:value="AIzaSyA7I6Z2LF-jtAR6NAMP_AdD0LiQ6A7bKWM" />
 
         <activity
-            android:name=".admin.AdminMainActivity"
+            android:name=".SplashScreen"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

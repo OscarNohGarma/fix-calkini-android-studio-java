@@ -54,4 +54,7 @@
     <string name="txt_tus_reportes">Tus reportes</string>
     <string name="txt_no_reports">Aún no has realizado reportes.</string>
 
+    <!-- Configuracion google -->
+    <string name="default_web_client_id">334619578842-s7tv70r80qf96f7pf1dh3aqgkoogp90o.apps.googleusercontent.com</string>
+
 </resources>
