@@ -37,6 +37,7 @@ android {
 }
 
 dependencies {
+    implementation ("de.hdodenhof:circleimageview:3.1.0")
     implementation("com.google.android.gms:play-services-auth:21.0.0")
 
     implementation(platform("com.google.firebase:firebase-bom:32.7.0")) // Usa la última versión estable

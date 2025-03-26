@@ -38,7 +38,10 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -57,6 +60,7 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        testGoogle = false;
 
         viewImg = findViewById(R.id.idcarrite);
         layoutLogin = findViewById(R.id.layout_login);
@@ -108,16 +112,20 @@ public class LoginActivity extends AppCompatActivity {
                         //alert();
                         Toast.makeText(getApplicationContext(), "Esta cuenta ya está registrada", Toast.LENGTH_LONG).show();
                     } else {
+                        long timestamp = System.currentTimeMillis();
+                        String fechaLegible = convertirTimestamp(timestamp);
                         if(testGoogle == false){
                             // Crear el usuario en Firebase Authentication
                             FirebaseAuth.getInstance().createUserWithEmailAndPassword(edit_correo2.getText().toString(), edit_contra2.getText().toString()).addOnCompleteListener(task -> {
                                 if (task.isSuccessful()) {
+
                                     // Metodo Hash para guardar los datos
                                     HashMap<String, String> usuarioMash = new HashMap<>();
                                     usuarioMash.put("nombre", edit_nombre.getText().toString());
                                     usuarioMash.put("email", edit_correo2.getText().toString());
                                     usuarioMash.put("password", edit_contra2.getText().toString());
                                     usuarioMash.put("tipo", "usuario");
+                                    usuarioMash.put("fecha_registro", fechaLegible);
 
                                     // Guardar el usuario en la base de datos de Firestore
                                     db.collection("users").document(edit_correo2.getText().toString()).set(usuarioMash).addOnCompleteListener(task1 -> {
@@ -156,6 +164,7 @@ public class LoginActivity extends AppCompatActivity {
                             usuarioMash.put("email", edit_correo2.getText().toString());
                             usuarioMash.put("password", "");
                             usuarioMash.put("tipo", "usuario");
+                            usuarioMash.put("fecha_registro", fechaLegible);
 
                             // Guardar el usuario en la base de datos de Firestore
                             db.collection("users").document(edit_correo2.getText().toString()).set(usuarioMash).addOnCompleteListener(task1 -> {
@@ -271,6 +280,11 @@ public class LoginActivity extends AppCompatActivity {
         });
 
     }
+    private String convertirTimestamp(long timestamp) {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+        Date date = new Date(timestamp);
+        return sdf.format(date);
+    }
 
     private boolean iniciarsesion() {
         boolean sucesfull = true;
@@ -316,7 +330,6 @@ public class LoginActivity extends AppCompatActivity {
                                 Toast.makeText(getApplicationContext(), "Esta cuenta ya está registrada", Toast.LENGTH_LONG).show();
                             } else {
                                 testGoogle = true;
-                                Toast.makeText(getApplicationContext(), "No hay", Toast.LENGTH_LONG).show();
 
                                 edit_correo2.setText(email);
                                 edit_correo2.setEnabled(false);
@@ -348,7 +361,6 @@ public class LoginActivity extends AppCompatActivity {
                             }
                         });
 
-                        Toast.makeText(LoginActivity.this, "Correo: " + email, Toast.LENGTH_SHORT).show();
                     } else {
                         // Si el inicio de sesión falla, muestra un mensaje al usuario
                         Toast.makeText(LoginActivity.this, "Authentication failed.", Toast.LENGTH_SHORT).show();

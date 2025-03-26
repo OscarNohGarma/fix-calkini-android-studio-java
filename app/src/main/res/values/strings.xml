@@ -37,7 +37,7 @@
     <string name="txt_prof_correo">Correo electrónico:</string>
     <string name="txt_ejemplo_correo">usuario@example.com</string>
     <string name="text_reportes_realizados">Reportes realizados:</string>
-    <string name="txt_numero_reportes">12</string>
+    <string name="txt_numero_reportes">0</string>
     <string name="txt_fecha_registro">Fecha de registro:</string>
     <string name="txt_ejemplo_fecha">10/03/2024</string>
     <string name="btn_save">Guardar cambios</string>

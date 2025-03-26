@@ -161,7 +161,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     protected void onStart() {
         super.onStart();
         String correoRecuperado = ToolBox.obtenerCorreo(getApplicationContext());
-        Toast.makeText(getApplicationContext(), "Correo recuperado: " + correoRecuperado, Toast.LENGTH_LONG).show();
     }
 
     private void cerrarSesion() {
