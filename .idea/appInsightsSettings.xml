@@ -8,10 +8,10 @@
             <InsightsFilterSettings>
               <option name="connection">
                 <ConnectionSetting>
-                  <option name="appId" value="PLACEHOLDER" />
-                  <option name="mobileSdkAppId" value="" />
-                  <option name="projectId" value="" />
-                  <option name="projectNumber" value="" />
+                  <option name="appId" value="com.example.fixcalkini" />
+                  <option name="mobileSdkAppId" value="1:334619578842:android:62d69019b56be9866af0e3" />
+                  <option name="projectId" value="fixcalkini" />
+                  <option name="projectNumber" value="334619578842" />
                 </ConnectionSetting>
               </option>
               <option name="signal" value="SIGNAL_UNSPECIFIED" />

@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "334619578842",
+    "project_id": "fixcalkini",
+    "storage_bucket": "fixcalkini.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:334619578842:android:62d69019b56be9866af0e3",
+        "android_client_info": {
+          "package_name": "com.example.fixcalkini"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "334619578842-s7tv70r80qf96f7pf1dh3aqgkoogp90o.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDQCy4mN1hBMT0bsJVhUrgfNVTk9ipUf6s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "334619578842-s7tv70r80qf96f7pf1dh3aqgkoogp90o.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

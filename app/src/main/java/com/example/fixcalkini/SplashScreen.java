@@ -10,6 +10,8 @@ import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.fixcalkini.admin.AdminMainActivity;
+
 public class SplashScreen extends AppCompatActivity {
     private ImageView viewImg;
 
@@ -28,8 +30,18 @@ public class SplashScreen extends AppCompatActivity {
 
         // Retrasar el cambio de Activity sin bloquear el hilo principal
         new Handler(Looper.getMainLooper()).postDelayed(() -> {
-            startActivity(new Intent(SplashScreen.this, LoginActivity.class));
+            boolean isLoggedIn = ToolBox.testEstadoSesion(getApplicationContext());
+            if (isLoggedIn) {
+                String tipoUsuario = ToolBox.obtenerTipoUsuario(getApplicationContext());
+                if ("admin".equals(tipoUsuario)) {
+                    startActivity(new Intent(getApplicationContext(), AdminMainActivity.class));
+                } else {
+                    startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                }
+            } else {
+                startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+            }
             finish();
-        }, 2000); // 2 segundos
+        }, 2000);
     }
 }
