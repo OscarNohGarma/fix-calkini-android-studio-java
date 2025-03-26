@@ -37,5 +37,16 @@ public class ToolBox {
         return pref.getString("usuarioCorreo", "");  // Devolvemos un valor por defecto vacío si no se encuentra el correo
     }
 
+    public static void guardarTipoUsuario(Context context, String tipoUsuario) {
+        SharedPreferences preferences = context.getSharedPreferences("FixCalkiniPrefs", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString("tipo_usuario", tipoUsuario);
+        editor.apply();
+    }
+
+    public static String obtenerTipoUsuario(Context context) {
+        SharedPreferences preferences = context.getSharedPreferences("FixCalkiniPrefs", Context.MODE_PRIVATE);
+        return preferences.getString("tipo_usuario", "usuario"); // valor por defecto usuario
+    }
 
 }

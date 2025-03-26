@@ -2,6 +2,8 @@ package com.example.fixcalkini;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -21,6 +23,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.fixcalkini.admin.AdminMainActivity;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -111,14 +114,15 @@ public class LoginActivity extends AppCompatActivity {
                                 if (task.isSuccessful()) {
                                     // Metodo Hash para guardar los datos
                                     HashMap<String, String> usuarioMash = new HashMap<>();
-                                    usuarioMash.put("Nombre", edit_nombre.getText().toString());
-                                    usuarioMash.put("Email", edit_correo2.getText().toString());
-                                    usuarioMash.put("Contraseña", edit_contra2.getText().toString());
-                                    usuarioMash.put("Confirmar Contraseña", edit_confirmar2.getText().toString());
+                                    usuarioMash.put("nombre", edit_nombre.getText().toString());
+                                    usuarioMash.put("email", edit_correo2.getText().toString());
+                                    usuarioMash.put("password", edit_contra2.getText().toString());
+                                    usuarioMash.put("tipo", "usuario");
 
                                     // Guardar el usuario en la base de datos de Firestore
                                     db.collection("users").document(edit_correo2.getText().toString()).set(usuarioMash).addOnCompleteListener(task1 -> {
                                         if (task1.isSuccessful()) {
+
                                             Toast.makeText(getApplicationContext(), "Registro exitoso:)", Toast.LENGTH_SHORT).show();
                                             layoutLogin.setVisibility(View.VISIBLE); // Hacemos visible el login antes de iniciar animación
                                             layoutLogin.startAnimation(slideInLeft); // Se desliza dentro
@@ -148,10 +152,10 @@ public class LoginActivity extends AppCompatActivity {
                         }else{
                             // Metodo Hash para guardar los datos
                             HashMap<String, String> usuarioMash = new HashMap<>();
-                            usuarioMash.put("Nombre", edit_nombre.getText().toString());
-                            usuarioMash.put("Email", edit_correo2.getText().toString());
-                            usuarioMash.put("Contraseña", "");
-                            usuarioMash.put("Confirmar Contraseña", "");
+                            usuarioMash.put("nombre", edit_nombre.getText().toString());
+                            usuarioMash.put("email", edit_correo2.getText().toString());
+                            usuarioMash.put("password", "");
+                            usuarioMash.put("tipo", "usuario");
 
                             // Guardar el usuario en la base de datos de Firestore
                             db.collection("users").document(edit_correo2.getText().toString()).set(usuarioMash).addOnCompleteListener(task1 -> {
@@ -237,7 +241,7 @@ public class LoginActivity extends AppCompatActivity {
                     db.collection("users").document(edit_correo1.getText().toString()).get()
                             .addOnSuccessListener(documentSnapshot -> {
                                 if (documentSnapshot.exists()) {
-                                    String pwd = documentSnapshot.getString("Contraseña");
+                                    String pwd = documentSnapshot.getString("password");
                                     if (pwd != null && pwd.equals(edit_contra1.getText().toString())) {
                                         FirebaseAuth.getInstance().signInWithEmailAndPassword(
                                                 edit_correo1.getText().toString(),
@@ -404,21 +408,39 @@ public class LoginActivity extends AppCompatActivity {
 
         AlertDialog dialog = builder.create();
         dialog.show();
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                Intent act1 = new Intent(getApplicationContext(), MainActivity.class);
-                act1.putExtra("email", email);
+        db.collection("users").document(email).get().addOnSuccessListener(documentSnapshot -> {
+            if (documentSnapshot.exists()) {
+                String tipoUsuario = documentSnapshot.getString("tipo");
+                new Handler().postDelayed(() -> {
+                    Intent intent;
+                    if ("admin".equals(tipoUsuario)) {
+                        intent = new Intent(getApplicationContext(), AdminMainActivity.class);
+                    } else {
+                        intent = new Intent(getApplicationContext(), MainActivity.class);
+                    }
+                    intent.putExtra("email", email);
+                    ToolBox.setEstadoSesion(getApplicationContext(), true);
+                    ToolBox.guardarCorreo(getApplicationContext(), email);
 
-                // Agregar un log aquí
-                Log.d("LoginActivity", "Setting session to true");
-                ToolBox.setEstadoSesion(getApplicationContext(), true);
-                ToolBox.guardarCorreo(getApplicationContext(), email.toString());
-                startActivity(act1);
-                finish();
+                    if ("admin".equals(tipoUsuario)) {
+                        ToolBox.guardarTipoUsuario(getApplicationContext(), "admin");
+                    } else {
+                        ToolBox.guardarTipoUsuario(getApplicationContext(), "usuario");
+                    }
+
+                    startActivity(intent);
+                    finish();
+                }, 2000);
+            } else {
+                Toast.makeText(getApplicationContext(), "No se encontró el usuario en la base de datos", Toast.LENGTH_SHORT).show();
+                dialog.dismiss();
             }
-        }, 5000);
+        }).addOnFailureListener(e -> {
+            Toast.makeText(getApplicationContext(), "Error al obtener el tipo de usuario", Toast.LENGTH_SHORT).show();
+            dialog.dismiss();
+        });
     }
 
 

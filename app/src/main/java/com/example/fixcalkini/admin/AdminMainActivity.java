@@ -5,10 +5,13 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -26,20 +29,27 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.example.fixcalkini.AboutActivity;
 import com.example.fixcalkini.LoginActivity;
+import com.example.fixcalkini.MainActivity;
 import com.example.fixcalkini.ProfileActivity;
 import com.example.fixcalkini.R;
 
 
 import com.example.fixcalkini.ReportesActivity;
+import com.example.fixcalkini.ToolBox;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class AdminMainActivity extends AppCompatActivity implements OnMapReadyCallback {
     private GoogleMap mMap;
+    private GoogleSignInClient googleSignInClient; // Instancia de GoogleSignInClient
     private Button btnReportesRecientes;
     private DrawerLayout drawerLayout;
     private ImageButton btnConfig;
@@ -51,6 +61,11 @@ public class AdminMainActivity extends AppCompatActivity implements OnMapReadyCa
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_admin_main);
         EdgeToEdge.enable(this);
+        // Inicializar GoogleSignInClient
+        googleSignInClient = GoogleSignIn.getClient(this,
+                new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                        .requestEmail()
+                        .build());
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -95,10 +110,7 @@ public class AdminMainActivity extends AppCompatActivity implements OnMapReadyCa
                 intent = new Intent(AdminMainActivity.this, AboutActivity.class);
                 startActivity(intent);
             } else if (id == R.id.nav_cerrar_sesion) {
-                intent = new Intent(AdminMainActivity.this, LoginActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(intent);
-                finish();
+                cerrarSesion();
             }
             drawerLayout.closeDrawers();
             return true;
@@ -111,6 +123,13 @@ public class AdminMainActivity extends AppCompatActivity implements OnMapReadyCa
                 startActivity(intent);
             }
         });
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        String correoRecuperado = ToolBox.obtenerCorreo(getApplicationContext());
+        Toast.makeText(getApplicationContext(), "Correo recuperado: " + correoRecuperado, Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -165,7 +184,32 @@ public class AdminMainActivity extends AppCompatActivity implements OnMapReadyCa
                         com.google.android.gms.maps.model.BitmapDescriptorFactory.HUE_GREEN))
         );
     }
+    private void cerrarSesion() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        LayoutInflater inflater = getLayoutInflater();
+        builder.setView(inflater.inflate(R.layout.progress_dialog, null));
+        builder.setCancelable(false);
 
-    // Mostrar diálogo de reportar un problema
+        AlertDialog dialog = builder.create();
+        dialog.show();
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
+        new Handler().postDelayed(() -> {
+            dialog.dismiss();
+            FirebaseAuth.getInstance().signOut();
+            ToolBox.setEstadoSesion(getApplicationContext(), false);
+            ToolBox.guardarCorreo(getApplicationContext(), "");
+
+            googleSignInClient.signOut().addOnCompleteListener(this, task -> {
+                googleSignInClient.revokeAccess().addOnCompleteListener(this, revokeTask -> {
+                    Toast.makeText(getApplicationContext(), "Sesión cerrada", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(AdminMainActivity.this, LoginActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+                    finish();
+                });
+            });
+
+        }, 3000);
+    }
 }

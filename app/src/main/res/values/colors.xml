@@ -13,6 +13,7 @@
     <color name="grayBlue">#547794</color>
     <color name="grayBlueLight">#70547794</color>
     <color name="orange">#f66b38</color>
+    <color name="transparent">#00FFFFFF</color>
 
     <color name="my_primary">#5E35B1</color>
     <color name="my_secondary">#673AB7</color>

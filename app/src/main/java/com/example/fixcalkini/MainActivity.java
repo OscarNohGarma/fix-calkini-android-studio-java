@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.SpannableString;
@@ -133,31 +134,34 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     private void mostrarDialogoReportar(final LatLng latLng) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Reportar un problema");
-        builder.setMessage("¿Quieres reportar un problema en este punto?");
-        builder.setPositiveButton("Sí", (dialog, which) -> {
+        LayoutInflater inflater = getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.dialog_reportar, null);
+        builder.setView(dialogView);
+
+        AlertDialog dialog = builder.create();
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+
+        Button btnAceptar = dialogView.findViewById(R.id.btnAceptar);
+        Button btnCancelar = dialogView.findViewById(R.id.btnCancelar);
+
+        btnAceptar.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, ReportarActivity.class);
             intent.putExtra("latitud", latLng.latitude);
             intent.putExtra("longitud", latLng.longitude);
             startActivity(intent);
+            dialog.dismiss();
         });
-        builder.setNegativeButton("Cancelar", null);
-        builder.show();
+
+        btnCancelar.setOnClickListener(v -> dialog.dismiss());
+
+        dialog.show();
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        boolean isLoggedIn = ToolBox.testEstadoSesion(getApplicationContext());
-        Log.d("MainActivity", "Session status: " + isLoggedIn);
-        if (!isLoggedIn) {
-            Intent iLogin = new Intent(this, LoginActivity.class);
-            startActivity(iLogin);
-            finish();
-        } else {
-            String correoRecuperado = ToolBox.obtenerCorreo(getApplicationContext());
-            Toast.makeText(getApplicationContext(), "Correo recuperado: " + correoRecuperado, Toast.LENGTH_LONG).show();
-        }
+        String correoRecuperado = ToolBox.obtenerCorreo(getApplicationContext());
+        Toast.makeText(getApplicationContext(), "Correo recuperado: " + correoRecuperado, Toast.LENGTH_LONG).show();
     }
 
     private void cerrarSesion() {
@@ -168,6 +172,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         AlertDialog dialog = builder.create();
         dialog.show();
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
         new Handler().postDelayed(() -> {
             dialog.dismiss();

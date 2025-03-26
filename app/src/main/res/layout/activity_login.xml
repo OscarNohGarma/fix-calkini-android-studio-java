@@ -162,8 +162,10 @@
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/edit_nombre"
                         android:layout_width="match_parent"
-                        android:layout_height="40dp"
+                        android:layout_height="wrap_content"
+                        android:padding="7dp"
                         android:background="@drawable/custom_edittext"
+                        android:textColor="@color/black"
                         android:hint="@string/txt_name" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -174,8 +176,10 @@
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/edit_correo2"
                         android:layout_width="match_parent"
-                        android:layout_height="40dp"
+                        android:layout_height="wrap_content"
+                        android:padding="7dp"
                         android:background="@drawable/custom_edittext"
+                        android:textColor="@color/black"
                         android:hint="@string/txt_correo" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -186,8 +190,10 @@
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/edit_contra2"
                         android:layout_width="match_parent"
-                        android:layout_height="40dp"
+                        android:layout_height="wrap_content"
+                        android:padding="7dp"
                         android:background="@drawable/custom_edittext"
+                        android:textColor="@color/black"
                         android:hint="@string/txt_pass"
                         android:inputType="textPassword" />
                 </com.google.android.material.textfield.TextInputLayout>
@@ -199,8 +205,10 @@
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/edit_confirmaContra"
                         android:layout_width="match_parent"
-                        android:layout_height="40dp"
+                        android:layout_height="wrap_content"
+                        android:padding="7dp"
                         android:background="@drawable/custom_edittext"
+                        android:textColor="@color/black"
                         android:hint="@string/txt_confirm_pass"
                         android:inputType="textPassword"
 
