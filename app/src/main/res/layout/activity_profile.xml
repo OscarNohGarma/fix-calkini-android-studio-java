@@ -66,7 +66,8 @@
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
         android:background="@drawable/custom_edittext"
-        android:hint="@string/txt_hint_name"
+        android:text="@string/txt_hint_name"
+
         android:textSize="16sp"
         android:textColor="@color/grayBlue"
         android:textColorHint="@color/grayBlueLight"
