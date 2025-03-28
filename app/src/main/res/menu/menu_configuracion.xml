@@ -10,7 +10,7 @@
 
     <item
         android:id="@+id/nav_reportes"
-        android:title="Ver tus reportes"
+        android:title="Mis reportes"
         android:icon="@drawable/report_svgrepo_com"
         android:iconTint="@color/grayBlue"
         />

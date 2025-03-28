@@ -1,8 +1,10 @@
 package com.example.fixcalkini;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.Nullable;
@@ -26,6 +28,7 @@ public class ReportesActivity extends AppCompatActivity {
     private ReporteAdapter adapter;
     private List<Reporte> listaReportes = new ArrayList<>();
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private View txtSinReportes; // Declarar como variable de clase
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +42,8 @@ public class ReportesActivity extends AppCompatActivity {
 
         // Configurar RecyclerView
         recyclerView = findViewById(R.id.recyclerReportes);
+        txtSinReportes = findViewById(R.id.txtSinReportes); // Guardar referencia
+
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         adapter = new ReporteAdapter(listaReportes);
         recyclerView.setAdapter(adapter);
@@ -49,7 +54,10 @@ public class ReportesActivity extends AppCompatActivity {
 
     private void cargarReportes() {
         String usuarioCorreo = ToolBox.obtenerCorreo(getApplicationContext()); // Obtener el correo del usuario autenticado
-
+        if (usuarioCorreo == null || usuarioCorreo.isEmpty()) {
+            Toast.makeText(this, "Error: No se encontró el usuario autenticado", Toast.LENGTH_SHORT).show();
+            return;
+        }
         CollectionReference reportesRef = db.collection("reportes");
 
         // Filtrar reportes donde el propietario sea el usuario autenticado
@@ -58,26 +66,42 @@ public class ReportesActivity extends AppCompatActivity {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
                         if (error != null) {
+                            Toast.makeText(getApplicationContext(), "Error al cargar reportes", Toast.LENGTH_SHORT).show();
+                            Log.e("FirebaseReportes", "Error al obtener reportes", error);
+                            return;
+                        }
+
+                        if (value == null) {
+                            Log.e("FirebaseReportes", "No se encontraron reportes o hubo un error.");
                             return;
                         }
 
                         listaReportes.clear();
                         for (QueryDocumentSnapshot document : value) {
+                            String id = document.getId(); // Obtener el ID del documento
                             String titulo = document.getString("titulo");
                             String descripcion = document.getString("descripcion");
+                            Double latitud = document.getDouble("latitud");
+                            Double longitud = document.getDouble("longitud");
+                            String timestamp = document.getString("timestamp");
+                            // Imprimir en la consola de Logcat
+                            Log.d("FirebaseReportes", "ID: " + id + ", Título: " + titulo + ", Descripción: " + descripcion + " " + latitud + " " + longitud + " " + timestamp);
 
                             // Agregar a la lista solo con título y descripción
-                            listaReportes.add(new Reporte(titulo, descripcion));
+                            listaReportes.add(new Reporte(id, titulo, descripcion, latitud, longitud, timestamp));
                         }
 
                         adapter.notifyDataSetChanged();
 
-                        // Guardar la cantidad de reportes en SharedPreferences
-                        ToolBox.guardarCantidadReportes(getApplicationContext(), listaReportes.size());
-
                         // Mostrar RecyclerView si hay reportes, o el mensaje de "No hay reportes"
-                        findViewById(R.id.recyclerReportes).setVisibility(listaReportes.isEmpty() ? View.GONE : View.VISIBLE);
-                        findViewById(R.id.txtSinReportes).setVisibility(listaReportes.isEmpty() ? View.VISIBLE : View.GONE);
+                      
+                        if (listaReportes.isEmpty()) {
+                            recyclerView.setVisibility(View.GONE);
+                            txtSinReportes.setVisibility(View.VISIBLE);
+                        } else {
+                            recyclerView.setVisibility(View.VISIBLE);
+                            txtSinReportes.setVisibility(View.GONE);
+                        }
                     }
                 });
     }

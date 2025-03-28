@@ -32,6 +32,7 @@ public class ToolBox {
         editor.apply();  // Usamos apply() para guardar de manera asincrónica
         Log.d("ToolBox", "Correo guardado: " + correo);  // Opcional: Para verificar en los logs
     }
+
     public static String obtenerCorreo(Context context) {
         SharedPreferences pref = context.getSharedPreferences("fixCalkiniSesion", Context.MODE_PRIVATE);
         return pref.getString("usuarioCorreo", "");  // Devolvemos un valor por defecto vacío si no se encuentra el correo
@@ -48,18 +49,4 @@ public class ToolBox {
         SharedPreferences preferences = context.getSharedPreferences("FixCalkiniPrefs", Context.MODE_PRIVATE);
         return preferences.getString("tipo_usuario", "usuario"); // valor por defecto usuario
     }
-    public static void guardarCantidadReportes(Context context, int cantidad) {
-        SharedPreferences pref = context.getSharedPreferences("fixCalkiniSesion", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = pref.edit();
-        editor.putInt("cantidadReportes", cantidad);
-        editor.apply();
-        Log.d("ToolBox", "Cantidad de reportes guardada: " + cantidad);
-    }
-
-    public static String obtenerCantidadReportes(Context context) {
-        SharedPreferences pref = context.getSharedPreferences("fixCalkiniSesion", Context.MODE_PRIVATE);
-        return String.valueOf(pref.getInt("cantidadReportes", 0 )); // Si no hay registros, devuelve 0 por defecto
-    }
-
-
 }
