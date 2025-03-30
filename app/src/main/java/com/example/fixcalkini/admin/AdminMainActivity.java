@@ -1,7 +1,6 @@
 package com.example.fixcalkini.admin;
 
 import android.annotation.SuppressLint;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
@@ -19,7 +18,6 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
@@ -29,12 +27,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.example.fixcalkini.AboutActivity;
 import com.example.fixcalkini.LoginActivity;
-import com.example.fixcalkini.MainActivity;
-import com.example.fixcalkini.ProfileActivity;
 import com.example.fixcalkini.R;
-
-
-import com.example.fixcalkini.ReportesActivity;
 import com.example.fixcalkini.ToolBox;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -46,6 +39,8 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 public class AdminMainActivity extends AppCompatActivity implements OnMapReadyCallback {
     private GoogleMap mMap;
@@ -78,7 +73,6 @@ public class AdminMainActivity extends AppCompatActivity implements OnMapReadyCa
         if (mapFragment != null) {
             mapFragment.getMapAsync(this);
         }
-
 
 
         // Configurar el menú lateral
@@ -140,50 +134,46 @@ public class AdminMainActivity extends AppCompatActivity implements OnMapReadyCa
         LatLng calkini = new LatLng(20.370884, -90.051370);
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(calkini, 15f));
 
-        // Marcador del centro de Calkiní
-        mMap.addMarker(new com.google.android.gms.maps.model.MarkerOptions()
-                .position(calkini)
-                .title("Calkiní")
-                .icon(com.google.android.gms.maps.model.BitmapDescriptorFactory.defaultMarker(
-                        com.google.android.gms.maps.model.BitmapDescriptorFactory.HUE_BLUE))
-        );
+        // Referencia a la base de datos Firestore
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-        // Marcadores de reportes NO públicos (rojo)
-        LatLng reporteNoPublico1 = new LatLng(20.371500, -90.052000);
-        LatLng reporteNoPublico2 = new LatLng(20.369800, -90.050500);
+        // Obtener los reportes desde Firestore
+        db.collection("reportes")
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            // Extraer latitud y longitud
+                            double latitud = document.getDouble("latitud");
+                            double longitud = document.getDouble("longitud");
+                            String titulo = document.getString("titulo");
+                            String estado = document.getString("estado"); // Estado del reporte
 
-        mMap.addMarker(new com.google.android.gms.maps.model.MarkerOptions()
-                .position(reporteNoPublico1)
-                .title("Reporte pendiente 1")
-                .icon(com.google.android.gms.maps.model.BitmapDescriptorFactory.defaultMarker(
-                        com.google.android.gms.maps.model.BitmapDescriptorFactory.HUE_RED))
-        );
+                            // Determinar color del marcador según estado
+                            float colorMarcador;
+                            if ("pendiente".equalsIgnoreCase(estado)) {
+                                colorMarcador = com.google.android.gms.maps.model.BitmapDescriptorFactory.HUE_RED; // 🔴
+                            } else if ("aceptado".equalsIgnoreCase(estado)) {
+                                colorMarcador = com.google.android.gms.maps.model.BitmapDescriptorFactory.HUE_GREEN; // 🟢
+                            } else {
+                                colorMarcador = com.google.android.gms.maps.model.BitmapDescriptorFactory.HUE_YELLOW; // 🟡 (otros estados)
+                            }
 
-        mMap.addMarker(new com.google.android.gms.maps.model.MarkerOptions()
-                .position(reporteNoPublico2)
-                .title("Reporte pendiente 2")
-                .icon(com.google.android.gms.maps.model.BitmapDescriptorFactory.defaultMarker(
-                        com.google.android.gms.maps.model.BitmapDescriptorFactory.HUE_RED))
-        );
+                            // Crear marcador
+                            LatLng ubicacion = new LatLng(latitud, longitud);
+                            mMap.addMarker(new com.google.android.gms.maps.model.MarkerOptions()
+                                    .position(ubicacion)
+                                    .title(titulo)
+                                    .icon(com.google.android.gms.maps.model.BitmapDescriptorFactory.defaultMarker(colorMarcador))
+                            );
+                        }
+                    } else {
+                        Toast.makeText(AdminMainActivity.this, "Error al obtener reportes", Toast.LENGTH_SHORT).show();
+                    }
+                });
 
-        // Marcadores de reportes PÚBLICOS (verde)
-        LatLng reportePublico1 = new LatLng(20.372000, -90.051500);
-        LatLng reportePublico2 = new LatLng(20.370200, -90.049800);
-
-        mMap.addMarker(new com.google.android.gms.maps.model.MarkerOptions()
-                .position(reportePublico1)
-                .title("Reporte público 1")
-                .icon(com.google.android.gms.maps.model.BitmapDescriptorFactory.defaultMarker(
-                        com.google.android.gms.maps.model.BitmapDescriptorFactory.HUE_GREEN))
-        );
-
-        mMap.addMarker(new com.google.android.gms.maps.model.MarkerOptions()
-                .position(reportePublico2)
-                .title("Reporte público 2")
-                .icon(com.google.android.gms.maps.model.BitmapDescriptorFactory.defaultMarker(
-                        com.google.android.gms.maps.model.BitmapDescriptorFactory.HUE_GREEN))
-        );
     }
+
     private void cerrarSesion() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         LayoutInflater inflater = getLayoutInflater();

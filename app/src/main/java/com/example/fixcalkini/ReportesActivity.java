@@ -1,5 +1,6 @@
 package com.example.fixcalkini;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -7,6 +8,7 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -45,7 +47,7 @@ public class ReportesActivity extends AppCompatActivity {
         txtSinReportes = findViewById(R.id.txtSinReportes); // Guardar referencia
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new ReporteAdapter(listaReportes);
+        adapter = new ReporteAdapter(listaReportes, this::verDetalles);
         recyclerView.setAdapter(adapter);
 
         // Cargar los reportes desde Firebase
@@ -94,7 +96,7 @@ public class ReportesActivity extends AppCompatActivity {
                         adapter.notifyDataSetChanged();
 
                         // Mostrar RecyclerView si hay reportes, o el mensaje de "No hay reportes"
-                      
+
                         if (listaReportes.isEmpty()) {
                             recyclerView.setVisibility(View.GONE);
                             txtSinReportes.setVisibility(View.VISIBLE);
@@ -104,6 +106,17 @@ public class ReportesActivity extends AppCompatActivity {
                         }
                     }
                 });
+    } // Método para mostrar la alerta con el ID del reporte
+
+    private void verDetalles(@NonNull Reporte reporte) {
+
+        Intent intent = new Intent(ReportesActivity.this, DetallesReporte.class);
+        intent.putExtra("id", reporte.getId());
+        intent.putExtra("titulo", reporte.getTitulo());
+        intent.putExtra("descripcion", reporte.getDescripcion());
+        intent.putExtra("latitud", reporte.getLatitud());
+        intent.putExtra("longitud", reporte.getLongitud());
+        startActivity(intent);
     }
 
 }

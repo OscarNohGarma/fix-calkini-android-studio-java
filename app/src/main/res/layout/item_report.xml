@@ -4,7 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     app:cardCornerRadius="16dp"
-
     app:cardElevation="6dp"
     app:cardUseCompatPadding="true">
 
@@ -13,7 +12,7 @@
         android:layout_height="wrap_content"
         android:padding="16dp"
         android:orientation="horizontal"
-        android:background="@android:color/white">
+        android:background="@drawable/selector_item">
 
         <!-- Imagen circular -->
         <de.hdodenhof.circleimageview.CircleImageView

@@ -27,7 +27,7 @@
 
     <!-- Main -->
     <string name="desc_conf">Opciones</string>
-    <string name="btn_new_report">Crear un nuevo reporte</string>
+    <string name="btn_new_report">Nuevo reporte</string>
 
     <!-- Perfil -->
     <string name="btn_back_desc">Regresar</string>

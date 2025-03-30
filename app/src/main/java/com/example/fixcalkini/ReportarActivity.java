@@ -1,9 +1,7 @@
 package com.example.fixcalkini;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.view.animation.Animation;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -20,11 +18,10 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.MapView;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.text.SimpleDateFormat;
@@ -39,7 +36,7 @@ public class ReportarActivity extends AppCompatActivity implements OnMapReadyCal
     private MapView mapView;
     private GoogleMap gMap;
     private ImageButton btn_back;
-    private  Button btn_enviar_reporte;
+    private Button btn_enviar_reporte;
     private double latitud, longitud;
 
     private EditText et_descripcion;
@@ -102,10 +99,11 @@ public class ReportarActivity extends AppCompatActivity implements OnMapReadyCal
         HashMap<String, Object> reporteMash = new HashMap<>();
         reporteMash.put("propietario", ToolBox.obtenerCorreo(getApplicationContext()));
         reporteMash.put("titulo", tituloReporte);
-        reporteMash.put("descripcion",  et_descripcion.getText().toString());
+        reporteMash.put("descripcion", et_descripcion.getText().toString());
         reporteMash.put("latitud", latitud);
         reporteMash.put("longitud", longitud);
         reporteMash.put("timestamp", fechaLegible); // Guardar fecha y hora del reporte
+        reporteMash.put("estado", "pendiente"); // Por defecto el reporte se encuentra pendiente
 
 
         // Subir el reporte con un ID aleatorio generado automáticamente por Firestore
@@ -129,6 +127,7 @@ public class ReportarActivity extends AppCompatActivity implements OnMapReadyCal
         gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(ubicacion, 16f));
         gMap.getUiSettings().setAllGesturesEnabled(false); // Deshabilita interacciones
     }
+
     private String convertirTimestamp(long timestamp) {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.getDefault());
         Date date = new Date(timestamp);
@@ -137,11 +136,26 @@ public class ReportarActivity extends AppCompatActivity implements OnMapReadyCal
 
     // Métodos del ciclo de vida para el MapView
     @Override
-    protected void onResume() { super.onResume(); mapView.onResume(); }
+    protected void onResume() {
+        super.onResume();
+        mapView.onResume();
+    }
+
     @Override
-    protected void onPause() { super.onPause(); mapView.onPause(); }
+    protected void onPause() {
+        super.onPause();
+        mapView.onPause();
+    }
+
     @Override
-    protected void onDestroy() { super.onDestroy(); mapView.onDestroy(); }
+    protected void onDestroy() {
+        super.onDestroy();
+        mapView.onDestroy();
+    }
+
     @Override
-    public void onLowMemory() { super.onLowMemory(); mapView.onLowMemory(); }
+    public void onLowMemory() {
+        super.onLowMemory();
+        mapView.onLowMemory();
+    }
 }
