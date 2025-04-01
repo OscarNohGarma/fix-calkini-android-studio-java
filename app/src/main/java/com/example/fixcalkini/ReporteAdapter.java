@@ -13,9 +13,17 @@ import java.util.List;
 public class ReporteAdapter extends RecyclerView.Adapter<ReporteAdapter.ReporteViewHolder> {
 
     private List<Reporte> listaReportes;
+    private OnItemClickListener listener;
 
-    public ReporteAdapter(List<Reporte> listaReportes) {
+    // Interfaz para manejar los clics
+    public interface OnItemClickListener {
+        void onItemClick(Reporte reporte);
+    }
+
+
+    public ReporteAdapter(List<Reporte> listaReportes, OnItemClickListener listener) {
         this.listaReportes = listaReportes;
+        this.listener = listener;
     }
 
     @NonNull
@@ -30,6 +38,8 @@ public class ReporteAdapter extends RecyclerView.Adapter<ReporteAdapter.ReporteV
         Reporte reporte = listaReportes.get(position);
         holder.txtTitulo.setText(reporte.getTitulo());
         holder.txtDescripcion.setText(reporte.getDescripcion());
+        // Asignar evento de clic
+        holder.itemView.setOnClickListener(v -> listener.onItemClick(reporte));
     }
 
     @Override

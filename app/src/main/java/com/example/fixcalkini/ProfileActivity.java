@@ -1,8 +1,6 @@
 package com.example.fixcalkini;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -16,7 +14,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.example.fixcalkini.admin.AdminMainActivity;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 public class ProfileActivity extends AppCompatActivity {
@@ -24,7 +22,8 @@ public class ProfileActivity extends AppCompatActivity {
     ImageButton btnBack;
     Button btnGuardar;
     EditText edit_nombre;
-    TextView text_correo, text_registro,txtReportes;
+    TextView text_correo, text_registro, txtReportes;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,13 +38,28 @@ public class ProfileActivity extends AppCompatActivity {
         btnGuardar = findViewById(R.id.btnGuardar);
         btnBack = findViewById(R.id.btnBack);
 
-
         edit_nombre = findViewById(R.id.etNombre);
         text_correo = findViewById(R.id.txtEmail);
         text_registro = findViewById(R.id.txtRegistro);
         txtReportes = findViewById(R.id.txtReportes);
         text_correo.setText(ToolBox.obtenerCorreo(getApplicationContext()));
-        txtReportes.setText(ToolBox.obtenerCantidadReportes(getApplicationContext()));
+
+        // Obtener el número de reportes
+        CollectionReference reportesRef = db.collection("reportes");
+        reportesRef.whereEqualTo("propietario", ToolBox.obtenerCorreo(getApplicationContext()))
+                .addSnapshotListener((value, error) -> {
+                    if (error != null) {
+                        return;
+                    }
+
+                    if (value != null) {
+                        txtReportes.setText(String.valueOf(value.size())); // Directamente obtenemos la cantidad
+                    } else {
+                        txtReportes.setText("0"); // Si no hay datos, mostramos 0
+                    }
+                });
+
+
         db.collection("users").document(text_correo.getText().toString()).get().addOnSuccessListener(documentSnapshot -> {
             if (documentSnapshot.exists()) {
                 String nombre = documentSnapshot.getString("nombre");
@@ -61,6 +75,7 @@ public class ProfileActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "Error al obtener el nombre", Toast.LENGTH_SHORT).show();
 
         });
+        
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -71,7 +86,7 @@ public class ProfileActivity extends AppCompatActivity {
         btnGuardar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(validarNombre()){
+                if (validarNombre()) {
                     db.collection("users").document(text_correo.getText().toString())
                             .update("nombre", edit_nombre.getText().toString())
                             .addOnSuccessListener(aVoid -> {
@@ -80,7 +95,7 @@ public class ProfileActivity extends AppCompatActivity {
                             .addOnFailureListener(e -> {
                                 Toast.makeText(getApplicationContext(), "Error al actualizar el nombre", Toast.LENGTH_SHORT).show();
                             });
-                }else {
+                } else {
                     Toast.makeText(getApplicationContext(), "Error al actualizar el nombre", Toast.LENGTH_SHORT).show();
 
                 }

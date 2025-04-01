@@ -27,7 +27,7 @@
 
     <!-- Main -->
     <string name="desc_conf">Opciones</string>
-    <string name="btn_new_report">Crear un nuevo reporte</string>
+    <string name="btn_new_report">Nuevo reporte</string>
 
     <!-- Perfil -->
     <string name="btn_back_desc">Regresar</string>
@@ -51,7 +51,7 @@
     <string name="btn_send_report">Enviar reporte</string>
 
     <!-- Tus reportes -->
-    <string name="txt_tus_reportes">Tus reportes</string>
+    <string name="txt_tus_reportes">Mis reportes</string>
     <string name="txt_no_reports">Aún no has realizado reportes.</string>
 
     <!-- Configuracion google -->

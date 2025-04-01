@@ -2,6 +2,7 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="gray_light">#F1F1F1</color>
 
 
     <color name="purple_200">#FFBB86FC</color>
@@ -17,4 +18,5 @@
 
     <color name="my_primary">#5E35B1</color>
     <color name="my_secondary">#673AB7</color>
+    <color name="red">#C41414</color>
 </resources>

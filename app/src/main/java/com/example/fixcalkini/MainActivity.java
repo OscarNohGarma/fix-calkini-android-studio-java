@@ -1,7 +1,6 @@
 package com.example.fixcalkini;
 
 import android.annotation.SuppressLint;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
@@ -11,7 +10,6 @@ import android.os.Handler;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,9 +18,9 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -78,8 +76,17 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         // Configurar el botón "Crear un nuevo reporte"
         btnReport = findViewById(R.id.btnReportes);
         btnReport.setOnClickListener(v -> {
-            permitirSeleccion = true;
-            Toast.makeText(MainActivity.this, "Selecciona un punto en el mapa para reportar", Toast.LENGTH_LONG).show();
+            if (!permitirSeleccion) {
+                permitirSeleccion = true;
+                btnReport.setBackgroundTintList(ContextCompat.getColorStateList(MainActivity.this, R.color.red)); // Cambia a rojo
+                btnReport.setText("Cancelar");
+                Toast.makeText(MainActivity.this, "Selecciona un punto en el mapa para reportar", Toast.LENGTH_LONG).show();
+            } else {
+                permitirSeleccion = false;
+                btnReport.setBackgroundTintList(ContextCompat.getColorStateList(MainActivity.this, R.color.grayBlue));
+                btnReport.setText("Nuevo reporte");
+            }
+
         });
 
         // Configurar el menú lateral
@@ -125,9 +132,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         mMap.setOnMapClickListener(latLng -> {
             if (permitirSeleccion) {
                 mostrarDialogoReportar(latLng);
-                permitirSeleccion = false;
             } else {
-                Toast.makeText(MainActivity.this, "Presiona 'Crear un nuevo reporte' antes de seleccionar un punto", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "Presiona 'Nuevo reporte' antes de seleccionar un punto", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -150,9 +156,14 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             intent.putExtra("longitud", latLng.longitude);
             startActivity(intent);
             dialog.dismiss();
+            permitirSeleccion = false;
+            btnReport.setBackgroundTintList(ContextCompat.getColorStateList(MainActivity.this, R.color.grayBlue));
+            btnReport.setText("Nuevo reporte");
         });
 
-        btnCancelar.setOnClickListener(v -> dialog.dismiss());
+        btnCancelar.setOnClickListener(v -> {
+            dialog.dismiss();
+        });
 
         dialog.show();
     }
