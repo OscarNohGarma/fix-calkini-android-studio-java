@@ -85,12 +85,13 @@ public class ReportesActivity extends AppCompatActivity {
                             String descripcion = document.getString("descripcion");
                             Double latitud = document.getDouble("latitud");
                             Double longitud = document.getDouble("longitud");
+                            String estado = document.getString("estado");
                             String timestamp = document.getString("timestamp");
                             // Imprimir en la consola de Logcat
                             Log.d("FirebaseReportes", "ID: " + id + ", Título: " + titulo + ", Descripción: " + descripcion + " " + latitud + " " + longitud + " " + timestamp);
 
                             // Agregar a la lista solo con título y descripción
-                            listaReportes.add(new Reporte(id, titulo, descripcion, latitud, longitud, timestamp));
+                            listaReportes.add(new Reporte(id, titulo, descripcion, latitud, longitud, estado, timestamp));
                         }
 
                         adapter.notifyDataSetChanged();
@@ -116,6 +117,7 @@ public class ReportesActivity extends AppCompatActivity {
         intent.putExtra("descripcion", reporte.getDescripcion());
         intent.putExtra("latitud", reporte.getLatitud());
         intent.putExtra("longitud", reporte.getLongitud());
+        intent.putExtra("estado", reporte.getEstado());
         startActivity(intent);
     }
 

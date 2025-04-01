@@ -1,6 +1,7 @@
 package com.example.fixcalkini.admin;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
@@ -15,9 +16,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.result.ActivityResultLauncher;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
@@ -26,6 +29,7 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.example.fixcalkini.AboutActivity;
+import com.example.fixcalkini.DetallesReporte;
 import com.example.fixcalkini.LoginActivity;
 import com.example.fixcalkini.R;
 import com.example.fixcalkini.ToolBox;
@@ -37,8 +41,10 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
@@ -48,6 +54,16 @@ public class AdminMainActivity extends AppCompatActivity implements OnMapReadyCa
     private Button btnReportesRecientes;
     private DrawerLayout drawerLayout;
     private ImageButton btnConfig;
+
+
+    private final ActivityResultLauncher<Intent> detallesLauncher = registerForActivityResult(
+            new androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == RESULT_OK) {
+                    actualizarMapa(); // Recarga los reportes cuando se regrese de DetallesReporte
+                }
+            }
+    );
 
     @SuppressLint("SourceLockedOrientationActivity")
     @Override
@@ -123,7 +139,6 @@ public class AdminMainActivity extends AppCompatActivity implements OnMapReadyCa
     protected void onStart() {
         super.onStart();
         String correoRecuperado = ToolBox.obtenerCorreo(getApplicationContext());
-        Toast.makeText(getApplicationContext(), "Correo recuperado: " + correoRecuperado, Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -138,41 +153,46 @@ public class AdminMainActivity extends AppCompatActivity implements OnMapReadyCa
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
         // Obtener los reportes desde Firestore
-        db.collection("reportes")
-                .get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        for (QueryDocumentSnapshot document : task.getResult()) {
-                            // Extraer latitud y longitud
-                            double latitud = document.getDouble("latitud");
-                            double longitud = document.getDouble("longitud");
-                            String titulo = document.getString("titulo");
-                            String estado = document.getString("estado"); // Estado del reporte
+        actualizarMapa();
 
-                            // Determinar color del marcador según estado
-                            float colorMarcador;
-                            if ("pendiente".equalsIgnoreCase(estado)) {
-                                colorMarcador = com.google.android.gms.maps.model.BitmapDescriptorFactory.HUE_RED; // 🔴
-                            } else if ("aceptado".equalsIgnoreCase(estado)) {
-                                colorMarcador = com.google.android.gms.maps.model.BitmapDescriptorFactory.HUE_GREEN; // 🟢
-                            } else {
-                                colorMarcador = com.google.android.gms.maps.model.BitmapDescriptorFactory.HUE_YELLOW; // 🟡 (otros estados)
-                            }
+        mMap.setInfoWindowAdapter(new CustomInfoWindowAdapter(AdminMainActivity.this));
+        mMap.setOnInfoWindowClickListener(marker -> {
+            String idReporte = (String) marker.getTag();
 
-                            // Crear marcador
-                            LatLng ubicacion = new LatLng(latitud, longitud);
-                            mMap.addMarker(new com.google.android.gms.maps.model.MarkerOptions()
-                                    .position(ubicacion)
-                                    .title(titulo)
-                                    .icon(com.google.android.gms.maps.model.BitmapDescriptorFactory.defaultMarker(colorMarcador))
-                            );
-                        }
+            if (idReporte != null) {
+                // Obtener Firestore
+                DocumentReference docRef = db.collection("reportes").document(idReporte);
+
+                // Obtener los datos antes de abrir la nueva pantalla
+                docRef.get().addOnSuccessListener(documentSnapshot -> {
+                    if (documentSnapshot.exists()) {
+                        // Extraer los datos del reporte
+                        String titulo = documentSnapshot.getString("titulo");
+                        String descripcion = documentSnapshot.getString("descripcion");
+                        String estado = documentSnapshot.getString("estado");
+                        double latitud = documentSnapshot.getDouble("latitud");
+                        double longitud = documentSnapshot.getDouble("longitud");
+
+                        // Enviar los datos a la nueva actividad
+                        Intent intent = new Intent(AdminMainActivity.this, DetallesReporte.class);
+                        intent.putExtra("id", idReporte);
+                        intent.putExtra("titulo", titulo);
+                        intent.putExtra("descripcion", descripcion);
+                        intent.putExtra("estado", estado);
+                        intent.putExtra("latitud", latitud);
+                        intent.putExtra("longitud", longitud);
+                        intent.putExtra("evaluacion", true);
+                        detallesLauncher.launch(intent); // Lanzar la actividad
                     } else {
-                        Toast.makeText(AdminMainActivity.this, "Error al obtener reportes", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(AdminMainActivity.this, "Reporte no encontrado", Toast.LENGTH_SHORT).show();
                     }
+                }).addOnFailureListener(e -> {
+                    Toast.makeText(AdminMainActivity.this, "Error al obtener datos", Toast.LENGTH_SHORT).show();
                 });
-
+            }
+        });
     }
+
 
     private void cerrarSesion() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -202,4 +222,69 @@ public class AdminMainActivity extends AppCompatActivity implements OnMapReadyCa
 
         }, 3000);
     }
+
+    private void actualizarMapa() {
+        if (mMap != null) {
+            mMap.clear(); // Borra todos los marcadores
+            FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+            db.collection("reportes").get().addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        double latitud = document.getDouble("latitud");
+                        double longitud = document.getDouble("longitud");
+                        String titulo = document.getString("titulo");
+                        String estado = document.getString("estado");
+                        String idReporte = document.getId();
+
+                        if ("rechazado".equalsIgnoreCase(estado)) continue;
+                        if ("arreglado".equalsIgnoreCase(estado)) continue;
+
+                        float colorMarcador = estado.equalsIgnoreCase("pendiente") ?
+                                com.google.android.gms.maps.model.BitmapDescriptorFactory.HUE_RED :
+                                estado.equalsIgnoreCase("aceptado") ?
+                                        com.google.android.gms.maps.model.BitmapDescriptorFactory.HUE_GREEN :
+                                        com.google.android.gms.maps.model.BitmapDescriptorFactory.HUE_YELLOW;
+
+                        LatLng ubicacion = new LatLng(latitud, longitud);
+                        Marker marker = mMap.addMarker(new com.google.android.gms.maps.model.MarkerOptions()
+                                .position(ubicacion)
+                                .title(titulo)
+                                .icon(com.google.android.gms.maps.model.BitmapDescriptorFactory.defaultMarker(colorMarcador))
+                        );
+
+                        if (marker != null) {
+                            marker.setTag(idReporte);
+                        }
+                    }
+                } else {
+                    Toast.makeText(AdminMainActivity.this, "Error al actualizar reportes", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+    }
 }
+
+
+class CustomInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
+    private final View window;
+    private final LayoutInflater inflater;
+
+    CustomInfoWindowAdapter(Context context) {
+        inflater = LayoutInflater.from(context);
+        window = inflater.inflate(R.layout.custom_info_window, null);
+    }
+
+    @Override
+    public View getInfoWindow(Marker marker) {
+        return null; // Usa getInfoContents en su lugar
+    }
+
+    @Override
+    public View getInfoContents(Marker marker) {
+        TextView tvTitulo = window.findViewById(R.id.tvTitulo);
+        tvTitulo.setText(marker.getTitle());
+        return window;
+    }
+}
+
