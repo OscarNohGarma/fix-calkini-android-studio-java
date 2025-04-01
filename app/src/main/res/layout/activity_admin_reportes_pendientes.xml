@@ -27,7 +27,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:fontFamily="@font/poppins_regular"
-        android:text="Reportes pendientes"
+        android:text="Reportes aceptadas"
         android:textColor="@color/grayBlue"
         android:textSize="20sp"
         android:textStyle="bold"
