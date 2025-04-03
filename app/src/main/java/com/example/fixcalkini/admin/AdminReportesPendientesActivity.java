@@ -60,7 +60,7 @@ public class AdminReportesPendientesActivity extends AppCompatActivity {
         txtSinReportes = findViewById(R.id.txtSinReportes); // Guardar referencia
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new ReporteAdapter(listaReportes, this::verDetalles);
+        adapter = new ReporteAdapter(listaReportes, this::verDetalles, true);
         recyclerView.setAdapter(adapter);
         cargarReportes();
     }
@@ -129,6 +129,7 @@ public class AdminReportesPendientesActivity extends AppCompatActivity {
         intent.putExtra("latitud", reporte.getLatitud());
         intent.putExtra("longitud", reporte.getLongitud());
         intent.putExtra("estado", reporte.getEstado());
+        intent.putExtra("mostrarUbicacion", true); // Agregar este extra
         startActivity(intent);
     }
 }
