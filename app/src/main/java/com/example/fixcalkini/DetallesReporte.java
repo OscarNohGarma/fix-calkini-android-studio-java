@@ -22,6 +22,9 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class DetallesReporte extends AppCompatActivity implements OnMapReadyCallback {
 
     String id, tipo, descripcion, estado;
@@ -32,6 +35,7 @@ public class DetallesReporte extends AppCompatActivity implements OnMapReadyCall
     private GoogleMap gMap;
     private double latitud, longitud;
     Button btnAceptar, btnRechazar, btnArreglar;
+    String text_correo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +47,8 @@ public class DetallesReporte extends AppCompatActivity implements OnMapReadyCall
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        text_correo = ToolBox.obtenerCorreo(getApplicationContext());
 
         id = getIntent().getStringExtra("id");
         tipo = getIntent().getStringExtra("titulo");
@@ -97,8 +103,13 @@ public class DetallesReporte extends AppCompatActivity implements OnMapReadyCall
             if (id != null) {
                 DocumentReference reporteRef = db.collection("reportes").document(id);
 
+                // Crear un mapa con los campos a actualizar
+                Map<String, Object> actualizaciones = new HashMap<>();
+                actualizaciones.put("estado", "aceptado");
+                actualizaciones.put("revisor", text_correo);
+
                 // Actualizar estado a "aceptado"
-                reporteRef.update("estado", "aceptado")
+                reporteRef.update(actualizaciones)
                         .addOnSuccessListener(aVoid -> {
                             Toast.makeText(DetallesReporte.this, "Reporte aceptado", Toast.LENGTH_SHORT).show();
                             // Enviar resultado a AdminMainActivity
@@ -112,7 +123,7 @@ public class DetallesReporte extends AppCompatActivity implements OnMapReadyCall
         btnRechazar.setOnClickListener(v -> {
             if (id != null) {
                 DocumentReference reporteRef = db.collection("reportes").document(id);
-
+                
                 // Actualizar estado a "aceptado"
                 reporteRef.update("estado", "rechazado")
                         .addOnSuccessListener(aVoid -> {
