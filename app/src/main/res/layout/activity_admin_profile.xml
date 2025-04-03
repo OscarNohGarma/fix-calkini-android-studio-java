@@ -56,10 +56,10 @@
         app:layout_constraintTop_toBottomOf="@id/imgPerfil"
         app:layout_constraintStart_toStartOf="parent"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="20dp"/>
+        android:layout_marginTop="20dp" />
 
     <TextView
-        android:id="@+id/etNombre"
+        android:id="@+id/txtNombre"
         android:layout_width="0dp"
         android:padding="9dp"
         android:layout_height="wrap_content"
@@ -70,7 +70,7 @@
         android:textColor="@color/grayBlue"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/label_nombre"/>
+        app:layout_constraintTop_toBottomOf="@id/label_nombre" />
 
     <!-- Correo -->
     <TextView
@@ -80,10 +80,10 @@
         android:text="@string/txt_prof_correo"
         android:textSize="16sp"
         android:textColor="@color/grayBlue"
-        app:layout_constraintTop_toBottomOf="@id/etNombre"
+        app:layout_constraintTop_toBottomOf="@id/txtNombre"
         app:layout_constraintStart_toStartOf="parent"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="10dp"/>
+        android:layout_marginTop="10dp" />
 
     <TextView
         android:id="@+id/txtEmail"
@@ -97,7 +97,7 @@
         android:padding="10dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/label_email"/>
+        app:layout_constraintTop_toBottomOf="@id/label_email" />
 
     <!-- Número de reportes -->
     <TextView
@@ -110,7 +110,7 @@
         app:layout_constraintTop_toBottomOf="@id/txtEmail"
         app:layout_constraintStart_toStartOf="parent"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="10dp"/>
+        android:layout_marginTop="10dp" />
 
     <TextView
         android:id="@+id/txtReportes"
@@ -122,7 +122,7 @@
         android:padding="10dp"
         app:layout_constraintTop_toBottomOf="@id/label_reportes"
         app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginStart="20dp"/>
+        android:layout_marginStart="20dp" />
 
     <!-- Fecha de registro -->
     <TextView
@@ -135,7 +135,7 @@
         app:layout_constraintTop_toBottomOf="@id/txtReportes"
         app:layout_constraintStart_toStartOf="parent"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="10dp"/>
+        android:layout_marginTop="10dp" />
 
     <TextView
         android:id="@+id/txtRegistro"
@@ -147,8 +147,7 @@
         android:padding="10dp"
         app:layout_constraintTop_toBottomOf="@id/label_registro"
         app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginStart="20dp"/>
-
+        android:layout_marginStart="20dp" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
