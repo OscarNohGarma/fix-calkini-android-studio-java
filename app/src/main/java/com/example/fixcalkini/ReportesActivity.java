@@ -47,7 +47,7 @@ public class ReportesActivity extends AppCompatActivity {
         txtSinReportes = findViewById(R.id.txtSinReportes); // Guardar referencia
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new ReporteAdapter(listaReportes, this::verDetalles);
+        adapter = new ReporteAdapter(listaReportes, this::verDetalles, false);
         recyclerView.setAdapter(adapter);
 
         // Cargar los reportes desde Firebase

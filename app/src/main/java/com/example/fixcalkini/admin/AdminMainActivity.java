@@ -48,12 +48,17 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class AdminMainActivity extends AppCompatActivity implements OnMapReadyCallback {
     private GoogleMap mMap;
     private GoogleSignInClient googleSignInClient; // Instancia de GoogleSignInClient
     private Button btnReportesRecientes;
     private DrawerLayout drawerLayout;
     private ImageButton btnConfig;
+    private LatLng ubicacionResaltada;
+    private List<Marker> markers = new ArrayList<>(); // Lista para almacenar los marcadores
 
 
     private final ActivityResultLauncher<Intent> detallesLauncher = registerForActivityResult(
@@ -90,6 +95,12 @@ public class AdminMainActivity extends AppCompatActivity implements OnMapReadyCa
             mapFragment.getMapAsync(this);
         }
 
+        // Verificar si la actividad fue abierta con una ubicación específica
+        double latitud = getIntent().getDoubleExtra("latitud", 0);
+        double longitud = getIntent().getDoubleExtra("longitud", 0);
+        if (latitud != 0 && longitud != 0) {
+            ubicacionResaltada = new LatLng(latitud, longitud);
+        }
 
         // Configurar el menú lateral
         drawerLayout = findViewById(R.id.drawer_layout);
@@ -154,6 +165,26 @@ public class AdminMainActivity extends AppCompatActivity implements OnMapReadyCa
 
         // Obtener los reportes desde Firestore
         actualizarMapa();
+
+        if (ubicacionResaltada != null) {
+            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(ubicacionResaltada, 18f), new GoogleMap.CancelableCallback() {
+                @Override
+                public void onFinish() {
+                    // Buscar el marcador correspondiente a la ubicación resaltada
+                    for (Marker marker : markers) {
+                        if (marker.getPosition().equals(ubicacionResaltada)) {
+                            // Cuando termine el zoom, mostramos el infoWindow del marcador
+                            marker.showInfoWindow();
+                        }
+                    }
+                }
+
+                @Override
+                public void onCancel() {
+                    // Si el zoom se cancela, no hacemos nada
+                }
+            });
+        }
 
         mMap.setInfoWindowAdapter(new CustomInfoWindowAdapter(AdminMainActivity.this));
         mMap.setOnInfoWindowClickListener(marker -> {
@@ -226,6 +257,7 @@ public class AdminMainActivity extends AppCompatActivity implements OnMapReadyCa
     private void actualizarMapa() {
         if (mMap != null) {
             mMap.clear(); // Borra todos los marcadores
+            markers.clear(); // Limpiar la lista de marcadores
             FirebaseFirestore db = FirebaseFirestore.getInstance();
 
             db.collection("reportes").get().addOnCompleteListener(task -> {
@@ -255,6 +287,7 @@ public class AdminMainActivity extends AppCompatActivity implements OnMapReadyCa
 
                         if (marker != null) {
                             marker.setTag(idReporte);
+                            markers.add(marker); // Agregar el marcador a la lista
                         }
                     }
                 } else {
