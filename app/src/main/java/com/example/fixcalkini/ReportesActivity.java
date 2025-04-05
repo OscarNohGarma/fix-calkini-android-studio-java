@@ -118,6 +118,7 @@ public class ReportesActivity extends AppCompatActivity {
         intent.putExtra("latitud", reporte.getLatitud());
         intent.putExtra("longitud", reporte.getLongitud());
         intent.putExtra("estado", reporte.getEstado());
+        intent.putExtra("timestamp", reporte.getTimestamp());
         startActivity(intent);
     }
 
