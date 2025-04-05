@@ -129,6 +129,8 @@ public class AdminReportesAceptadosActivity extends AppCompatActivity {
         intent.putExtra("latitud", reporte.getLatitud());
         intent.putExtra("longitud", reporte.getLongitud());
         intent.putExtra("estado", reporte.getEstado());
+        intent.putExtra("timestamp", reporte.getTimestamp());
+        intent.putExtra("evaluacion", true);
         intent.putExtra("mostrarUbicacion", true); // Agregar este extra
         startActivity(intent);
     }

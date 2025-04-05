@@ -50,7 +50,8 @@
         android:id="@+id/tvTipo"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_margin="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginHorizontal="20dp"
         android:padding="8dp"
         android:textSize="16sp"
         android:textColor="@color/grayBlue"
@@ -76,7 +77,8 @@
         android:id="@+id/tv_descripcion"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_margin="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginHorizontal="20dp"
         android:background="@drawable/custom_edittext"
         android:gravity="top"
         android:padding="8dp"
@@ -103,7 +105,8 @@
         android:id="@+id/mapView"
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:layout_margin="20sp"
+        android:layout_marginTop="10dp"
+        android:layout_marginHorizontal="20dp"
         app:layout_constraintTop_toBottomOf="@+id/label_preview"
 
         tools:layout_editor_absoluteX="20dp" />
@@ -123,6 +126,20 @@
         app:layout_constraintTop_toBottomOf="@+id/mapView" />
 
     <!-- Botón de Aceptar -->
+
+    <TextView
+        android:id="@+id/txtFecha"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:text="Fecha:"
+        android:textColor="@color/grayBlue"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtEstado" />
+
     <Button
         android:id="@+id/btn_aceptar"
         android:layout_width="0dp"
@@ -136,7 +153,7 @@
         app:layout_constraintEnd_toStartOf="@+id/btn_rechazar"
         app:layout_constraintHorizontal_bias="0.4"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtEstado"
+        app:layout_constraintTop_toBottomOf="@+id/txtFecha"
         android:visibility="gone" />
 
     <!-- Botón de Rechazar con color cambiado -->
@@ -152,7 +169,7 @@
         app:layout_constraintStart_toEndOf="@+id/btn_aceptar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtEstado"
+        app:layout_constraintTop_toBottomOf="@+id/txtFecha"
         android:visibility="gone" />
 
     <Button
@@ -167,7 +184,7 @@
         app:layout_constraintStart_toEndOf="@+id/btn_aceptar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtEstado"
+        app:layout_constraintTop_toBottomOf="@+id/txtFecha"
         android:visibility="gone" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

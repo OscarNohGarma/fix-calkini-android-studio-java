@@ -66,6 +66,7 @@ public class AdminMainActivity extends AppCompatActivity implements OnMapReadyCa
             result -> {
                 if (result.getResultCode() == RESULT_OK) {
                     actualizarMapa(); // Recarga los reportes cuando se regrese de DetallesReporte
+                    contarNuevosReportes(); // <-- Agrega esto
                 }
             }
     );
@@ -203,6 +204,7 @@ public class AdminMainActivity extends AppCompatActivity implements OnMapReadyCa
                         String estado = documentSnapshot.getString("estado");
                         double latitud = documentSnapshot.getDouble("latitud");
                         double longitud = documentSnapshot.getDouble("longitud");
+                        String timestamp = documentSnapshot.getString("timestamp");
 
                         // Enviar los datos a la nueva actividad
                         Intent intent = new Intent(AdminMainActivity.this, DetallesReporte.class);
@@ -212,6 +214,7 @@ public class AdminMainActivity extends AppCompatActivity implements OnMapReadyCa
                         intent.putExtra("estado", estado);
                         intent.putExtra("latitud", latitud);
                         intent.putExtra("longitud", longitud);
+                        intent.putExtra("timestamp", timestamp);
                         intent.putExtra("evaluacion", true);
                         detallesLauncher.launch(intent); // Lanzar la actividad
                     } else {
@@ -262,7 +265,10 @@ public class AdminMainActivity extends AppCompatActivity implements OnMapReadyCa
 
             db.collection("reportes").get().addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {
+
+                    int nuevosReportes = 0; // <-- Contador de reportes nuevos
                     for (QueryDocumentSnapshot document : task.getResult()) {
+
                         double latitud = document.getDouble("latitud");
                         double longitud = document.getDouble("longitud");
                         String titulo = document.getString("titulo");
@@ -271,6 +277,13 @@ public class AdminMainActivity extends AppCompatActivity implements OnMapReadyCa
 
                         if ("rechazado".equalsIgnoreCase(estado)) continue;
                         if ("arreglado".equalsIgnoreCase(estado)) continue;
+
+
+                        // Verificar si el atributo "nuevo" es true
+                        Boolean esNuevo = document.getBoolean("nuevo");
+                        if (esNuevo != null && esNuevo) {
+                            nuevosReportes++; // <-- Sumar al contador
+                        }
 
                         float colorMarcador = estado.equalsIgnoreCase("pendiente") ?
                                 com.google.android.gms.maps.model.BitmapDescriptorFactory.HUE_RED :
@@ -290,12 +303,60 @@ public class AdminMainActivity extends AppCompatActivity implements OnMapReadyCa
                             markers.add(marker); // Agregar el marcador a la lista
                         }
                     }
+
+                    // Obtener el botón
+                    Button btnReportesRecientes = findViewById(R.id.btnReportesRecientes);
+                    String textoBase = "Reportes recientes";
+
+                    if (nuevosReportes > 0) {
+                        btnReportesRecientes.setText(textoBase + " (" + nuevosReportes + ")");
+                    } else {
+                        btnReportesRecientes.setText(textoBase);
+                    }
+
                 } else {
                     Toast.makeText(AdminMainActivity.this, "Error al actualizar reportes", Toast.LENGTH_SHORT).show();
                 }
             });
         }
     }
+
+    private void contarNuevosReportes() {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        db.collection("reportes").get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                int nuevosReportes = 0;
+                for (QueryDocumentSnapshot document : task.getResult()) {
+                    Boolean esNuevo = document.getBoolean("nuevo");
+                    String estado = document.getString("estado");
+                    if ((esNuevo != null && esNuevo) &&
+                            !"rechazado".equalsIgnoreCase(estado) &&
+                            !"arreglado".equalsIgnoreCase(estado)) {
+                        nuevosReportes++;
+                    }
+                }
+
+                Button btnReportesRecientes = findViewById(R.id.btnReportesRecientes);
+                String textoBase = "Reportes recientes";
+                if (nuevosReportes > 0) {
+                    btnReportesRecientes.setText(textoBase + " (" + nuevosReportes + ")");
+                } else {
+                    btnReportesRecientes.setText(textoBase);
+                }
+
+            } else {
+                Toast.makeText(AdminMainActivity.this, "Error al contar reportes nuevos", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        contarNuevosReportes();
+    }
+
 }
 
 
@@ -319,5 +380,6 @@ class CustomInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
         tvTitulo.setText(marker.getTitle());
         return window;
     }
+
 }
 
