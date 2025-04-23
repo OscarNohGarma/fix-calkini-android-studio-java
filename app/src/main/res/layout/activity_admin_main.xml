@@ -26,7 +26,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"/>
+                app:layout_constraintStart_toStartOf="parent" />
 
             <!-- Botón de Configuración -->
             <ImageButton
@@ -42,19 +42,38 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <!-- Botón de Reportes -->
-            <Button
-                android:id="@+id/btnReportesRecientes"
+            <FrameLayout
+                android:id="@+id/frameReportesRecientes"
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:backgroundTint="@color/grayBlue"
-                android:text="Ver reportes recientes"
-                android:textSize="16sp"
-                android:textColor="@color/white"
-                app:cornerRadius="50dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:layout_margin="16dp" />
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <Button
+                    android:id="@+id/btnReportesRecientes"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:backgroundTint="@color/grayBlue"
+                    android:text="Ver reportes recientes"
+                    android:textSize="16sp"
+                    android:textColor="@color/white"
+                    app:cornerRadius="50dp" />
+
+                <TextView
+                    android:id="@+id/badgeReportes"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_gravity="end|top"
+                    android:layout_marginTop="0dp"
+                    android:layout_marginEnd="0dp"
+                    android:background="@drawable/circle_red"
+                    android:textColor="@android:color/white"
+                    android:textSize="12sp"
+                    android:gravity="center"
+                    android:visibility="gone" />
+            </FrameLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

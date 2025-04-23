@@ -154,6 +154,7 @@ public class AdminReportesRecientesActivity extends AppCompatActivity {
         intent.putExtra("longitud", reporte.getLongitud());
         intent.putExtra("estado", reporte.getEstado());
         intent.putExtra("timestamp", reporte.getTimestamp());
+        intent.putExtra("evaluacion", true);
         intent.putExtra("mostrarUbicacion", true); // Agregar este extra
         startActivity(intent);
     }

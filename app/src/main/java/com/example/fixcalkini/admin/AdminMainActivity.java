@@ -304,15 +304,6 @@ public class AdminMainActivity extends AppCompatActivity implements OnMapReadyCa
                         }
                     }
 
-                    // Obtener el botón
-                    Button btnReportesRecientes = findViewById(R.id.btnReportesRecientes);
-                    String textoBase = "Reportes recientes";
-
-                    if (nuevosReportes > 0) {
-                        btnReportesRecientes.setText(textoBase + " (" + nuevosReportes + ")");
-                    } else {
-                        btnReportesRecientes.setText(textoBase);
-                    }
 
                 } else {
                     Toast.makeText(AdminMainActivity.this, "Error al actualizar reportes", Toast.LENGTH_SHORT).show();
@@ -339,10 +330,14 @@ public class AdminMainActivity extends AppCompatActivity implements OnMapReadyCa
 
                 Button btnReportesRecientes = findViewById(R.id.btnReportesRecientes);
                 String textoBase = "Reportes recientes";
+                TextView badgeReportes = findViewById(R.id.badgeReportes);
+
+
                 if (nuevosReportes > 0) {
-                    btnReportesRecientes.setText(textoBase + " (" + nuevosReportes + ")");
+                    badgeReportes.setText(String.valueOf(nuevosReportes));
+                    badgeReportes.setVisibility(View.VISIBLE);
                 } else {
-                    btnReportesRecientes.setText(textoBase);
+                    badgeReportes.setVisibility(View.GONE);
                 }
 
             } else {
