@@ -52,7 +52,13 @@ public class DetallesReporte extends AppCompatActivity implements OnMapReadyCall
         text_correo = ToolBox.obtenerCorreo(getApplicationContext());
 
         id = getIntent().getStringExtra("id");
-        if (id != null) {
+        tipo = getIntent().getStringExtra("titulo");
+        descripcion = getIntent().getStringExtra("descripcion");
+        estado = getIntent().getStringExtra("estado");
+        fecha = getIntent().getStringExtra("timestamp");
+        evaluacion = getIntent().getBooleanExtra("evaluacion", false);
+
+        if (id != null && evaluacion) {
             FirebaseFirestore.getInstance()
                     .collection("reportes")
                     .document(id)
@@ -61,11 +67,6 @@ public class DetallesReporte extends AppCompatActivity implements OnMapReadyCall
                     .addOnFailureListener(e -> Log.e("AdminReportes", "Error al actualizar reporte", e));
 
         }
-        tipo = getIntent().getStringExtra("titulo");
-        descripcion = getIntent().getStringExtra("descripcion");
-        estado = getIntent().getStringExtra("estado");
-        fecha = getIntent().getStringExtra("timestamp");
-        evaluacion = getIntent().getBooleanExtra("evaluacion", false);
 
         btnAceptar = findViewById(R.id.btn_aceptar);
         btnRechazar = findViewById(R.id.btn_rechazar);

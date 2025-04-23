@@ -1,6 +1,7 @@
 package com.example.fixcalkini;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
@@ -15,9 +16,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.result.ActivityResultLauncher;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
@@ -34,8 +37,14 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements OnMapReadyCallback {
     private GoogleMap mMap;
@@ -45,6 +54,18 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private DrawerLayout drawerLayout;
     private ImageButton btnConfig;
     private boolean permitirSeleccion = false; // Control para habilitar selección en el mapa
+
+    private LatLng ubicacionResaltada;
+    private List<Marker> markers = new ArrayList<>(); // Lista para almacenar los marcadores
+
+    private final ActivityResultLauncher<Intent> detallesLauncher = registerForActivityResult(
+            new androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == RESULT_OK) {
+                    actualizarMapa(); // Recarga los reportes cuando se regrese de DetallesReporte
+                }
+            }
+    );
 
     @SuppressLint("SourceLockedOrientationActivity")
     @Override
@@ -127,7 +148,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         mMap = googleMap;
         LatLng calkini = new LatLng(20.370884, -90.051370);
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(calkini, 15f));
-        mMap.addMarker(new com.google.android.gms.maps.model.MarkerOptions().position(calkini).title("Calkiní"));
 
         mMap.setOnMapClickListener(latLng -> {
             if (permitirSeleccion) {
@@ -136,6 +156,99 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 Toast.makeText(MainActivity.this, "Presiona 'Nuevo reporte' antes de seleccionar un punto", Toast.LENGTH_SHORT).show();
             }
         });
+
+        // Referencia a la base de datos Firestore
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        // Obtener los reportes desde Firestore
+        actualizarMapa();
+
+        mMap.setInfoWindowAdapter(new CustomInfoWindowAdapter(MainActivity.this));
+        /*
+        mMap.setOnInfoWindowClickListener(marker -> {
+            String idReporte = (String) marker.getTag();
+
+            if (idReporte != null) {
+                // Obtener Firestore
+                DocumentReference docRef = db.collection("reportes").document(idReporte);
+
+                // Obtener los datos antes de abrir la nueva pantalla
+                docRef.get().addOnSuccessListener(documentSnapshot -> {
+                    if (documentSnapshot.exists()) {
+                        // Extraer los datos del reporte
+                        String titulo = documentSnapshot.getString("titulo");
+                        String descripcion = documentSnapshot.getString("descripcion");
+                        String estado = documentSnapshot.getString("estado");
+                        double latitud = documentSnapshot.getDouble("latitud");
+                        double longitud = documentSnapshot.getDouble("longitud");
+                        String timestamp = documentSnapshot.getString("timestamp");
+
+                        // Enviar los datos a la nueva actividad
+                        Intent intent = new Intent(MainActivity.this, DetallesReporte.class);
+                        intent.putExtra("id", idReporte);
+                        intent.putExtra("titulo", titulo);
+                        intent.putExtra("descripcion", descripcion);
+                        intent.putExtra("estado", estado);
+                        intent.putExtra("latitud", latitud);
+                        intent.putExtra("longitud", longitud);
+                        intent.putExtra("timestamp", timestamp);
+                        intent.putExtra("evaluacion", true);
+                        detallesLauncher.launch(intent); // Lanzar la actividad
+                    } else {
+                        Toast.makeText(MainActivity.this, "Reporte no encontrado", Toast.LENGTH_SHORT).show();
+                    }
+                }).addOnFailureListener(e -> {
+                    Toast.makeText(MainActivity.this, "Error al obtener datos", Toast.LENGTH_SHORT).show();
+                });
+            }
+        });
+
+         */
+    }
+
+    private void actualizarMapa() {
+        if (mMap != null) {
+            mMap.clear(); // Borra todos los marcadores
+            markers.clear(); // Limpiar la lista de marcadores
+            FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+            db.collection("reportes").get().addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+
+                        double latitud = document.getDouble("latitud");
+                        double longitud = document.getDouble("longitud");
+                        String titulo = document.getString("titulo");
+                        String estado = document.getString("estado");
+                        String idReporte = document.getId();
+
+                        if ("rechazado".equalsIgnoreCase(estado)) continue;
+                        if ("arreglado".equalsIgnoreCase(estado)) continue;
+                        if ("pendiente".equalsIgnoreCase(estado)) continue;
+
+
+                        float colorMarcador = com.google.android.gms.maps.model.BitmapDescriptorFactory.HUE_RED;
+
+                        LatLng ubicacion = new LatLng(latitud, longitud);
+                        Marker marker = mMap.addMarker(new com.google.android.gms.maps.model.MarkerOptions()
+                                .position(ubicacion)
+                                .title(titulo)
+                                .icon(com.google.android.gms.maps.model.BitmapDescriptorFactory.defaultMarker(colorMarcador))
+                        );
+
+                        if (marker != null) {
+                            marker.setTag(idReporte);
+                            markers.add(marker); // Agregar el marcador a la lista
+                        }
+                    }
+
+
+                } else {
+                    Toast.makeText(MainActivity.this, "Error al actualizar reportes", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
     }
 
     private void mostrarDialogoReportar(final LatLng latLng) {
@@ -201,5 +314,28 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             });
 
         }, 3000);
+    }
+
+    class CustomInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
+        private final View window;
+        private final LayoutInflater inflater;
+
+        CustomInfoWindowAdapter(Context context) {
+            inflater = LayoutInflater.from(context);
+            window = inflater.inflate(R.layout.custom_info_window_only, null);
+        }
+
+        @Override
+        public View getInfoWindow(Marker marker) {
+            return null; // Usa getInfoContents en su lugar
+        }
+
+        @Override
+        public View getInfoContents(Marker marker) {
+            TextView tvTitulo = window.findViewById(R.id.tvTitulo);
+            tvTitulo.setText(marker.getTitle());
+            return window;
+        }
+
     }
 }
