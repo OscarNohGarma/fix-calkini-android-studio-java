@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
@@ -20,40 +19,54 @@
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_marginEnd="16dp"
+            android:src="@drawable/logo_app" />
 
-            android:src="@drawable/logo_app" /> <!-- Asegúrate de tener un ícono o imagen para esto -->
-
-        <!-- Textos -->
+        <!-- Textos y botón en un LinearLayout horizontal -->
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:orientation="vertical">
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
 
-            <TextView
-                android:id="@+id/txtTituloReporte"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="Título del Reporte"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                android:maxLines="1"
-                android:ellipsize="end"
-                android:textColor="@color/grayBlue" />
+                android:layout_weight="1"
+                android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/txtDescripcionReporte"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Descripción del Reporte"
-                android:textSize="14sp"
-                android:maxLines="1"
-                android:ellipsize="end"
-                android:textColor="@android:color/darker_gray"
-                android:layout_marginTop="4dp" />
+                <TextView
+                    android:id="@+id/txtTituloReporte"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Título del Reporte"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    android:textColor="@color/grayBlue" />
 
+                <TextView
+                    android:id="@+id/txtDescripcionReporte"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Descripción del Reporte"
+                    android:textSize="14sp"
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    android:textColor="@android:color/darker_gray"
+                    android:layout_marginTop="4dp" />
+            </LinearLayout>
+
+            <ImageButton
+                android:id="@+id/btnVerEnMapa"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginStart="8dp"
+                android:background="@drawable/btn_location_background"
+                android:src="@drawable/map_icon"
+                android:contentDescription="Ver en el mapa" />
         </LinearLayout>
-
     </LinearLayout>
 
 </androidx.cardview.widget.CardView>

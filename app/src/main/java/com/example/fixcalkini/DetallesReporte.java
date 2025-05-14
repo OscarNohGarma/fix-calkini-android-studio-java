@@ -1,6 +1,7 @@
 package com.example.fixcalkini;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -22,16 +23,20 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class DetallesReporte extends AppCompatActivity implements OnMapReadyCallback {
 
-    String id, tipo, descripcion, estado;
+    String id, tipo, descripcion, estado, fecha;
     Boolean evaluacion;
-    TextView txtTipo, txtDescripcion, txtEstado;
+    TextView txtTipo, txtDescripcion, txtEstado, txtFecha;
     ImageButton back;
     private MapView mapView;
     private GoogleMap gMap;
     private double latitud, longitud;
     Button btnAceptar, btnRechazar, btnArreglar;
+    String text_correo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,11 +49,24 @@ public class DetallesReporte extends AppCompatActivity implements OnMapReadyCall
             return insets;
         });
 
+        text_correo = ToolBox.obtenerCorreo(getApplicationContext());
+
         id = getIntent().getStringExtra("id");
         tipo = getIntent().getStringExtra("titulo");
         descripcion = getIntent().getStringExtra("descripcion");
         estado = getIntent().getStringExtra("estado");
+        fecha = getIntent().getStringExtra("timestamp");
         evaluacion = getIntent().getBooleanExtra("evaluacion", false);
+
+        if (id != null && evaluacion) {
+            FirebaseFirestore.getInstance()
+                    .collection("reportes")
+                    .document(id)
+                    .update("nuevo", false)
+                    .addOnSuccessListener(aVoid -> Log.d("AdminReportes", "Reporte marcado como no nuevo"))
+                    .addOnFailureListener(e -> Log.e("AdminReportes", "Error al actualizar reporte", e));
+
+        }
 
         btnAceptar = findViewById(R.id.btn_aceptar);
         btnRechazar = findViewById(R.id.btn_rechazar);
@@ -57,6 +75,7 @@ public class DetallesReporte extends AppCompatActivity implements OnMapReadyCall
         txtDescripcion = findViewById(R.id.tv_descripcion);
         back = findViewById(R.id.btnBack);
         txtEstado = findViewById(R.id.txtEstado);
+        txtFecha = findViewById(R.id.txtFecha);
 
         mapView = findViewById(R.id.mapView);
         // Inicializar el MapView
@@ -68,6 +87,9 @@ public class DetallesReporte extends AppCompatActivity implements OnMapReadyCall
         txtDescripcion.setText(descripcion);
         String newEstado = "Estado del reporte: " + estado.toUpperCase();
         txtEstado.setText(newEstado);
+
+        String newFecha = "Fecha: " + fecha;
+        txtFecha.setText(newFecha);
         // Obtener las coordenadas del intent
         latitud = getIntent().getDoubleExtra("latitud", 0.0);
         longitud = getIntent().getDoubleExtra("longitud", 0.0);
@@ -97,8 +119,13 @@ public class DetallesReporte extends AppCompatActivity implements OnMapReadyCall
             if (id != null) {
                 DocumentReference reporteRef = db.collection("reportes").document(id);
 
+                // Crear un mapa con los campos a actualizar
+                Map<String, Object> actualizaciones = new HashMap<>();
+                actualizaciones.put("estado", "aceptado");
+                actualizaciones.put("revisor", text_correo);
+
                 // Actualizar estado a "aceptado"
-                reporteRef.update("estado", "aceptado")
+                reporteRef.update(actualizaciones)
                         .addOnSuccessListener(aVoid -> {
                             Toast.makeText(DetallesReporte.this, "Reporte aceptado", Toast.LENGTH_SHORT).show();
                             // Enviar resultado a AdminMainActivity

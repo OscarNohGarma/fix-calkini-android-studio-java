@@ -104,6 +104,8 @@ public class ReportarActivity extends AppCompatActivity implements OnMapReadyCal
         reporteMash.put("longitud", longitud);
         reporteMash.put("timestamp", fechaLegible); // Guardar fecha y hora del reporte
         reporteMash.put("estado", "pendiente"); // Por defecto el reporte se encuentra pendiente
+        reporteMash.put("revisor", "");
+        reporteMash.put("nuevo", true);
 
 
         // Subir el reporte con un ID aleatorio generado automáticamente por Firestore

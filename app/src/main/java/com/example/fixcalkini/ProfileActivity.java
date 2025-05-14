@@ -75,7 +75,7 @@ public class ProfileActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "Error al obtener el nombre", Toast.LENGTH_SHORT).show();
 
         });
-        
+
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -106,7 +106,7 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     private boolean validarNombre() {
-        return Reglas.validarNombre(edit_nombre.getText().toString()) == 1 ? true : false;
+        return Reglas.validarNombre(edit_nombre.getText().toString()) == 1;
 
     }
 }
